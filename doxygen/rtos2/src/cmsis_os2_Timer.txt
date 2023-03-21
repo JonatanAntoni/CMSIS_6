@@ -2,11 +2,11 @@
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 //  ==== Timer Management Functions ====
-/** 
+/**
 \addtogroup CMSIS_RTOS_TimerMgmt Timer Management
 \ingroup CMSIS_RTOS
 \brief Create and control timer and timer callback functions.
-\details 
+\details
 In addition to the \ref CMSIS_RTOS_Wait CMSIS-RTOS also supports virtual timer objects. These timer objects can
 trigger the execution of a function (not threads). When a timer expires, a callback function is executed to run associated
 code with the timer. Each timer can be configured as a one-shot or a  periodic timer. A periodic timer repeats its operation
@@ -33,7 +33,7 @@ osTimerId_t one_shot_id, periodic_id;
 -# Define callback functions:
 \code
 static void one_shot_Callback (void *argument) {
-  int32_t arg = (int32_t)argument; // cast back argument '0' 
+  int32_t arg = (int32_t)argument; // cast back argument '0'
   // do something, i.e. set thread/event flags
 }
 static void periodic_Callback (void *argument) {
@@ -51,10 +51,10 @@ periodic_id = osTimerNew(periodic_Callback, osTimerPeriodic, (void *)5, NULL); /
                                                                                // to the callback function
 osTimerStart(one_shot_id, 500U);
 osTimerStart(periodic_id, 1500U);
- 
+
 // start the one-shot timer again after it has triggered the first time:
 osTimerStart(one_shot_id, 500U);
- 
+
 // when timers are not needed any longer free the resources:
 osTimerDelete(one_shot_id);
 osTimerDelete(periodic_id);
@@ -73,13 +73,13 @@ The \ref osTimerType_t specifies the a repeating (periodic) or one-shot timer fo
 The timer is not automatically restarted once it has elapsed. It can be restarted manually using \ref osTimerStart as needed.
 
 \var osTimerType_t::osTimerPeriodic
-\details 
+\details
 The timer repeats automatically and triggers the callback continuously while running, see \ref osTimerStart and \ref osTimerStop.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 /**
-\typedef osTimerId_t 
+\typedef osTimerId_t
 \details
 Instances of this type hold a reference to a timer object. \n
 Returned by:
@@ -100,13 +100,13 @@ use ISR callable functions from the timer callback.
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 /**
-\struct osTimerAttr_t 
+\struct osTimerAttr_t
 \details
 Specifies the following attributes for the \ref osTimerNew function.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osTimerId_t osTimerNew (osTimerFunc_t func, osTimerType_t type, void *argument, const osTimerAttr_t *attr)
 \details
 The function \b osTimerNew creates an one-shot or periodic timer and associates it with a callback function with \a argument.
@@ -120,24 +120,24 @@ The function \b osTimerNew returns the pointer to the timer object identifier or
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 void Timer1_Callback (void *arg);               // prototypes for timer callback function
 void Timer2_Callback (void *arg);               // prototypes for timer callback function
- 
+
 uint32_t exec1;                                 // argument for the timer call back function
 uint32_t exec2;                                 // argument for the timer call back function
- 
+
 void TimerCreate_example (void)  {
   osTimerId_t id1;                              // timer id
   osTimerId_t id2;                              // timer id
- 
+
   // Create one-shoot timer
   exec1 = 1U;
   id1 = osTimerNew(Timer1_Callback, osTimerOnce, &exec1, NULL);
   if (id1 != NULL) {
     // One-shoot timer created
   }
- 
+
   // Create periodic timer
   exec2 = 2U;
   id2 = osTimerNew(Timer2_Callback, osTimerPeriodic, &exec2, NULL);
@@ -161,7 +161,7 @@ The function \b osTimerGetName returns the pointer to the name string of the tim
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osTimerStart (osTimerId_t timer_id, uint32_t ticks)
 \details
 The function \b osTimerStart starts or restarts a timer specified by the parameter \a timer_id. The parameter \a ticks
@@ -178,19 +178,19 @@ Possible \ref osStatus_t return values:
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 void Timer_Callback (void *arg) {               // timer callback function
                                                 // arg contains &exec
                                                 // called every second after osTimerStart
 }
- 
+
 uint32_t exec;                                  // argument for the timer call back function
- 
+
 void TimerStart_example (void) {
   osTimerId_t id;                               // timer id
   uint32_t    timerDelay;                       // timer value
   osStatus_t  status;                           // function return status
- 
+
   // Create periodic timer
   exec = 1U;
   id = osTimerNew(Timer_Callback, osTimerPeriodic, &exec, NULL);
@@ -207,7 +207,7 @@ void TimerStart_example (void) {
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osTimerStop (osTimerId_t timer_id)
 \details
 The function \b osTimerStop stops a timer specified by the parameter \a timer_id.
@@ -223,15 +223,15 @@ Possible \ref osStatus_t return values:
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 void Timer_Callback (void *arg);                // prototype for timer callback function
- 
+
 uint32_t exec;                                  // argument for the timer call back function
- 
+
 void TimerStop_example (void) {
   osTimerId_t id;                               // timer id
   osStatus_t  status;                           // function return status
- 
+
   // Create periodic timer
   exec = 1U;
   id = osTimerNew(Timer_Callback, osTimerPeriodic, &exec, NULL);
@@ -249,7 +249,7 @@ void TimerStop_example (void) {
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn uint32_t osTimerIsRunning (osTimerId_t timer_id)
 \details
 The function \b osTimerIsRunning checks whether a timer specified by parameter \a timer_id is running. It returns \token{1}
@@ -259,7 +259,7 @@ if the timer is running and \token{0} if the timer is stopped or an error occurr
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osTimerDelete (osTimerId_t timer_id)
 \details
 The function \b osTimerDelete deletes the timer specified by parameter \a timer_id.
@@ -275,15 +275,15 @@ Possible \ref osStatus_t return values:
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 void Timer_Callback (void *arg);                // prototype for timer callback function
- 
+
 uint32_t exec;                                  // argument for the timer call back function
- 
+
 void TimerDelete_example (void) {
   osTimerId_t id;                               // timer id
-  osStatus_t  status;                           // function return status  
- 
+  osStatus_t  status;                           // function return status
+
   // Create periodic timer
   exec = 1U;
   id = osTimerNew(Timer_Callback, osTimerPeriodic, &exec, NULL);
@@ -292,7 +292,7 @@ void TimerDelete_example (void) {
   status = osTimerDelete(id);                   // stop and delete timer
   if (status != osOK) {
     // Timer could not be deleted
-  } 
+  }
   ;
 }
 \endcode
@@ -313,7 +313,7 @@ Default: \token{NULL} to use \ref CMSIS_RTOS_MemoryMgmt_Automatic for the timer 
 
 \var osTimerAttr_t::cb_size
 \details
-The size (in bytes) of memory block passed with \ref cb_mem. For RTX, the minimum value is defined with \ref osRtxTimerCbSize (higher values are permitted).
+The size (in bytes) of memory block passed with \ref cb_mem.
 
 Default: \token{0} as the default is no memory provided with \ref cb_mem.
 

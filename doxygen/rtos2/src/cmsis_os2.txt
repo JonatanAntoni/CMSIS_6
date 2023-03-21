@@ -10,7 +10,7 @@ advantages of this approach by avoiding unnecessary porting efforts.
 A typical CMSIS-RTOS2 API implementation interfaces to an existing real-time kernel. The CMSIS-RTOS2 API provides the
 following attributes and functionalities:
  - Function names, identifiers, and parameters are descriptive and easy to understand. The functions are powerful and
-   flexible which reduces the number of functions exposed to the user. 
+   flexible which reduces the number of functions exposed to the user.
  - \ref CMSIS_RTOS_ThreadMgmt allows you to define, create, and control threads.
  - Interrupt Service Routines (ISR) can \ref CMSIS_RTOS_ISR_Calls "call some CMSIS-RTOS functions". When a CMSIS-RTOS
    function cannot be called from an ISR context, it rejects the invocation and returns an error code.
@@ -53,13 +53,13 @@ modifications when using on a different CMSIS-RTOS2 implementation.
 
 \section usingOS2 Using a CMSIS-RTOS2 Implementation
 
-A CMSIS-RTOS2 component may be provided as library or source code (the picture below shows a library). 
+A CMSIS-RTOS2 component may be provided as library or source code (the picture below shows a library).
 A CMSIS-based application is extended with RTOS functionality by adding a CMSIS-RTOS2 component (and typically some configuration files).
 The \ref cmsis_os2_h gives access to RTOS API functions and is the only interface header required when dynamic object allocation is used.
-This enables portable application that works with every RTOS kernel event without re-compilation of the source code when the kernel is 
+This enables portable application that works with every RTOS kernel event without re-compilation of the source code when the kernel is
 changed.
 
-Static object allocation requires access to RTOS object control block definitions. An implementation specific header file (<i>rtos</i>.h in 
+Static object allocation requires access to RTOS object control block definitions. An implementation specific header file (<i>rtos</i>.h in
 the picture below) provides access to such definitions. The section For RTX v5 these definitions are provided in the header file %rtx_os.h that contains this definitions for RTX v5.
 
 
@@ -67,32 +67,32 @@ the picture below) provides access to such definitions. The section For RTX v5 t
 
 Once the files are added to a project, the user can start working with the CMSIS-RTOS functions.  A code example is provided
 below:
- 
+
 <b>Code Example</b>
 \code
 /*----------------------------------------------------------------------------
  * CMSIS-RTOS 'main' function template
  *---------------------------------------------------------------------------*/
- 
+
 #include "RTE_Components.h"
 #include  CMSIS_device_header
 #include "cmsis_os2.h"
- 
+
 /*----------------------------------------------------------------------------
  * Application main thread
  *---------------------------------------------------------------------------*/
 void app_main (void *argument) {
- 
+
   // ...
   for (;;) {}
 }
- 
+
 int main (void) {
- 
+
   // System Initialization
   SystemCoreClockUpdate();
   // ...
- 
+
   osKernelInitialize();                 // Initialize CMSIS-RTOS
   osThreadNew(app_main, NULL, NULL);    // Create application main thread
   osKernelStart();                      // Start thread execution
@@ -148,11 +148,11 @@ The steps to create a microcontroller application using RTX5 are:
 
    \image html project_window.png
 
-- If using the Variant: \b Source as stated above, you have to assure to use at least C99 compiler mode (Project Options -> C/C++ -> C99 Mode).   
+- If using the Variant: \b Source as stated above, you have to assure to use at least C99 compiler mode (Project Options -> C/C++ -> C99 Mode).
 - You can add template files to the project by right-clicking on <b>Source Group 1</b> and selecting
   <b>Add New Item to 'Source Group 1'</b>. In the new window, click on <b>User Code Template</b>. On the right-hand side
   you will see all available template files for CMSIS-RTOS RTX:
-  
+
    \image html add_item.png
 
 - \ref config_rtx5 "Configure" RTX5 to the application's needs using the \b %RTX_Config.h file.
@@ -161,14 +161,14 @@ The steps to create a microcontroller application using RTX5 are:
 
 \if ARMCA \section cre_rtx_cortexa Additional requirements for RTX on Cortex-A
 
-Cortex-A based microcontrollers are less unified with respect to the interrupt and timer implementations used compared to 
+Cortex-A based microcontrollers are less unified with respect to the interrupt and timer implementations used compared to
 M-class devices. Thus RTX requires additional components when an A-class device is used, namely
 <a href="../../Core_A/html/group__irq__ctrl__gr.html"><b>IRQ Controller (API)</b></a> and \ref CMSIS_RTOS_TickAPI "OS Tick (API)"
-implementations. 
+implementations.
 
 \image html manage_rte_cortex-a.png
 
-The default implementations provided along with CMSIS are 
+The default implementations provided along with CMSIS are
 - Arm <a href="../../Core_A/html/group__GIC__functions.html">Generic Interrupt Controller (GIC)</a>
 - Arm Cortex-A5, Cortex-A9 <a href="../../Core_A/html/group__PTM__timer__functions.html">Private Timer (PTIM)</a>
 - Arm Cortex-A7 <a href="../../Core_A/html/group__PL1__timer__functions.html">Generic Physical Timer (GTIM)</a>
@@ -180,7 +180,7 @@ proper implementations.
 
 \section cre_UsingIRQs Using Interrupts on Cortex-M
 
-On Cortex-M processors, the RTX5 kernel uses the following interrupt exceptions.  The table below also lists the 
+On Cortex-M processors, the RTX5 kernel uses the following interrupt exceptions.  The table below also lists the
 priorities that must be assigned to these interrupts.
 
 Handler | Priority | Interrupt/Exception
@@ -192,7 +192,7 @@ SVC     | lowest+1 | Supervisor Call used to enter the RTOS kernel from \b Threa
 Other device interrupts can be used without limitation. For Arm Cortex-M3/M4/M7 \if ARMv8M /M23/M33/M35P \endif  processors, interrupts are never disabled by RTX Kernel.
 
 <b>Usage of interrupt priority grouping</b>
-- The interrupt priority grouping should be configured using the CMSIS-Core function NVIC_SetPriorityGrouping before calling the function 
+- The interrupt priority grouping should be configured using the CMSIS-Core function NVIC_SetPriorityGrouping before calling the function
   \ref osKernelStart(). The RTX kernel uses the priority group value to setup the priority for SysTick and PendSV interrupts.
 - The RTX kernel sets the priority for the interrupts/exceptions listed in above table and uses the lowest two priority levels.
 - Do not change the priority used by the RTX kernel. If this cannot be avoided, ensure that the preempt priority of
@@ -208,21 +208,17 @@ tread_id = osThreadNew(tread_func, NULL, NULL);  // create some threads
 osKernelStart ();                                // start RTX kernel
 \endcode
 
-\section cre_rtx_proj_specifics Add support for RTX specific functions
-If you require some of the \ref rtx5_specific "RTX specific functions" in your application code, \#include the
-\ref rtx_os_h "header file rtx_os.h". This enables \ref lowPower "low-power" and \ref TickLess "tick-less" operation modes.
-
 \section cre_rtx_proj_er Add Event Recorder Visibility
 
 \ifnot FuSaRTS
-RTX5 interfaces to the <a href="https://www.keil.com/pack/doc/compiler/EventRecorder/html/index.html" target="_blank"><b>Event Recorder</b></a> 
+RTX5 interfaces to the <a href="https://www.keil.com/pack/doc/compiler/EventRecorder/html/index.html" target="_blank"><b>Event Recorder</b></a>
 to provide event information which helps you to understand and analyze the operation.
 
 - To use the Event Recorder together with RTX5, select the software component <b>Compiler:Event Recorder</b>.
 - Select the \b Source variant of the software component <b>CMSIS:RTOS2 (API):Keil RTX5</b>.
 
   \image html event_recorder_rte.png "Component selection for Event Recorder"
-  
+
 - Enable the related settings under \ref evtrecConfig.
 - Build the application code and download it to the debug hardware.
 \endif
@@ -260,12 +256,12 @@ Your application's \c main() should implement at least the following in the give
   functions (osXxxNew) may be called.
 
 
-\section Scheduler 
+\section Scheduler
 
 RTX5 implements a low-latency preemptive scheduler. Major parts of RTX5 are executed in handler mode such as
-  - \ref SysTick_Handler used for time-based scheduling.
-  - \ref SVC_Handler used for lock-based scheduling.
-  - \ref PendSV_Handler used for interrupt-based scheduling.
+  - SysTick_Handler used for time-based scheduling.
+  - SVC_Handler used for lock-based scheduling.
+  - PendSV_Handler used for interrupt-based scheduling.
 
 In order to be low-latency with respect to ISR execution those system exceptions are configured to use the
 lowest priority groups available. The priorities are configured such that no preemption happens between them. Thus
@@ -290,14 +286,14 @@ a blocking RTOS-call execution is switched back to thread 3 immediately during t
 At time index 5 thread 3 uses a blocking RTOS-call as well. Thus the scheduler switches back to thread 2 for time index 6.
 At time index 7 the scheduler uses the round-robin mechanism to switch to thread 1 and so on.
 
-\section MemoryAllocation Memory Allocation 
+\section MemoryAllocation Memory Allocation
 
 RTX5 objects (thread, mutex, semaphore, timer, message queue, thread and event flags, as well as memory pool) require
 dedicated RAM memory. Objects can be created using os<i>Object</i>New() calls and deleted using os<i>Object</i>Delete()
 calls. The related object memory needs to be available during the lifetime of the object.
 
 RTX5 offers three different memory allocation methods for objects:
-  - \ref GlobalMemoryPool uses a single global memory pool for all objects. It is easy to configure, but may have 
+  - \ref GlobalMemoryPool uses a single global memory pool for all objects. It is easy to configure, but may have
     the disadvantage for memory fragmentation when objects with different sizes are created and destroyed.
   - \ref ObjectMemoryPool uses a fixed-size memory pool for each object type. The method is time deterministic
      and avoids memory fragmentation.
@@ -341,7 +337,7 @@ When the memory pool does not provide sufficient memory, the creation of the obj
 os<i>Object</i>New() function returns \token{NULL}.
 
 \subsection StaticObjectMemory Static Object Memory
-In contrast to the dynamic memory allocations, the static memory allocation requires compile-time allocation of object memory. 
+In contrast to the dynamic memory allocations, the static memory allocation requires compile-time allocation of object memory.
 
 \image html MemAllocStat.png "Statically allocated memory for all objects"
 
@@ -350,16 +346,16 @@ see \ref CMSIS_RTOS_MemoryMgmt_Manual. Please take special note of the following
 
 Memory type                                  | Requirements
 ---------------------------------------------|-------------------------------------------------------------------------------
-Control Block (osXxxAttr_t::cb_mem)          | 4-Byte alignment. Size defined by \ref osRtxThreadCbSize, \ref osRtxTimerCbSize, \ref osRtxEventFlagsCbSize, \ref osRtxMutexCbSize, \ref osRtxSemaphoreCbSize, \ref osRtxMemoryPoolCbSize, \ref osRtxMessageQueueCbSize.
+Control Block (osXxxAttr_t::cb_mem)          | 4-Byte alignment. Size defined by osRtxThreadCbSize, osRtxTimerCbSize, osRtxEventFlagsCbSize, osRtxMutexCbSize, osRtxSemaphoreCbSize, osRtxMemoryPoolCbSize, osRtxMessageQueueCbSize.
 Thread Stack (osThreadAttr_t::stack_mem)     | 8-Byte alignment. Size is application specific, i.e. amount of stack variables and frames.
-Memory Pool (osMemoryPoolAttr_t::mp_mem)     | 4-Byte alignment. Size calculated with \ref osRtxMemoryPoolMemSize.
-Message Queue (osMessageQueueAttr_t::mq_mem) | 4-Byte alignment. Size calculated with \ref osRtxMessageQueueMemSize.
+Memory Pool (osMemoryPoolAttr_t::mp_mem)     | 4-Byte alignment. Size calculated with osRtxMemoryPoolMemSize.
+Message Queue (osMessageQueueAttr_t::mq_mem) | 4-Byte alignment. Size calculated with osRtxMessageQueueMemSize.
 
 
 In order to allow RTX5 aware debugging, i.e. Component Viewer, to recognize control blocks these
 needs to be placed in individual memory sections, i.e. using `__attribute__((section(...)))`.
 
-RTX Object    | Linker Section 
+RTX Object    | Linker Section
 --------------|------------------------
 Thread        | `.bss.os.thread.cb`
 Timer         | `.bss.os.timer.cb`
@@ -375,7 +371,7 @@ units to memory segments, manually.
 
 The following code example shows how to create an OS object using static memory.
 
-<b> Code Example:</b> 
+<b> Code Example:</b>
 \code{.c}
 /*----------------------------------------------------------------------------
  * CMSIS-RTOS 'main' function template
@@ -384,30 +380,30 @@ The following code example shows how to create an OS object using static memory.
 #include "RTE_Components.h"
 #include  CMSIS_device_header
 #include "cmsis_os2.h"
- 
+
 //include rtx_os.h for types of RTX objects
 #include "rtx_os.h"
- 
+
 //The thread function instanced in this example
 void worker(void *arg)
 {
-  while(1) 
+  while(1)
   {
     //work
     osDelay(10000);
-  }  
+  }
 }
- 
+
 // Define objects that are statically allocated for worker thread 1
 __attribute__((section(".bss.os.thread.cb")))
 osRtxThread_t worker_thread_tcb_1;
- 
+
 // Reserve two areas for the stacks of worker thread 1
 // uint64_t makes sure the memory alignment is 8
 uint64_t worker_thread_stk_1[64];
- 
+
 // Define the attributes which are used for thread creation
-// Optional const saves RAM memory and includes the values in periodic ROM tests 
+// Optional const saves RAM memory and includes the values in periodic ROM tests
 const osThreadAttr_t worker_attr_1 = {
   "wrk1",
   osThreadJoinable,
@@ -418,22 +414,22 @@ const osThreadAttr_t worker_attr_1 = {
   osPriorityAboveNormal,
   0
 };
- 
+
 // Define ID object for thread
 osThreadId_t th1;
- 
+
 /*----------------------------------------------------------------------------
  * Application main thread
  *---------------------------------------------------------------------------*/
 void app_main (void *argument) {
   uint32_t param = NULL;
- 
+
   // Create an instance of the worker thread with static resources (TCB and stack)
   th1 = osThreadNew(worker, &param, &worker_attr_1);
- 
+
   for (;;) {}
 }
- 
+
 int main (void) {
   // System Initialization
   SystemCoreClockUpdate();
@@ -456,7 +452,7 @@ space should be increased to a minimum of 300 bytes.
 
 Each thread is provided with a separate stack that holds the thread context and stack space for automatic variables and
 return addresses for function call nesting. The stack sizes of RTX threads are flexibly configurable as explained in the
-section \ref threadConfig. RTX offers a configurable checking for stack overflows and stack utilization. 
+section \ref threadConfig. RTX offers a configurable checking for stack overflows and stack utilization.
 
 
 \section lowPower Low-Power Operation
@@ -469,11 +465,11 @@ event.
 \code
 #include "RTE_Components.h"
 #include CMSIS_device_header            /* Device definitions                 */
- 
+
 void osRtxIdleThread (void) {
   /* The idle demon is a system thread, running when no other thread is       */
   /* ready to run.                                                            */
- 
+
   for (;;) {
     __WFE();                            /* Enter sleep mode                   */
   }
@@ -491,7 +487,7 @@ RTX uses the generic \ref CMSIS_RTOS_TickAPI to configure and control its period
 To use an alternative timer as the Kernel Tick Timer one simply needs to implement a custom version
 of the \ref CMSIS_RTOS_TickAPI.
 
-\note The OS Tick implementation provided must assure that the used timer interrupt uses the same (low) priority group 
+\note The OS Tick implementation provided must assure that the used timer interrupt uses the same (low) priority group
 as the service interrupts, i.e. interrupts used by RTX must not preempt each other. Refer to the \ref Scheduler section
 for more details.
 
@@ -524,7 +520,7 @@ was in power-down mode.
  *---------------------------------------------------------------------------*/
 static void MSP432_LP_Entry(void) {
   /* Enable PCM rude mode, which allows to device to enter LPM3 without waiting for peripherals */
-  PCM->CTL1 = PCM_CTL1_KEY_VAL | PCM_CTL1_FORCE_LPM_ENTRY;       
+  PCM->CTL1 = PCM_CTL1_KEY_VAL | PCM_CTL1_FORCE_LPM_ENTRY;
   /* Enable all SRAM bank retentions prior to going to LPM3  */
   SYSCTL->SRAM_BANKRET |= SYSCTL_SRAM_BANKRET_BNK7_RET;
   __enable_interrupt();
@@ -532,17 +528,17 @@ static void MSP432_LP_Entry(void) {
   /* Do not wake up on exit from ISR */
   SCB->SCR |= SCB_SCR_SLEEPONEXIT_Msk;
   /* Setting the sleep deep bit */
-  SCB->SCR |= (SCB_SCR_SLEEPDEEP_Msk);	
+  SCB->SCR |= (SCB_SCR_SLEEPDEEP_Msk);
 }
- 
+
 static volatile unsigned int tc;
 static volatile unsigned int tc_wakeup;
- 
+
 void RTC_C_IRQHandler(void)
 {
-  if (tc++ > tc_wakeup) 
+  if (tc++ > tc_wakeup)
   {
-    SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;    
+    SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;
     NVIC_DisableIRQ(RTC_C_IRQn);
     NVIC_ClearPendingIRQ(RTC_C_IRQn);
     return;
@@ -555,11 +551,11 @@ void RTC_C_IRQHandler(void)
     SCB->SCR |= (SCB_SCR_SLEEPDEEP_Msk);
   }
 }
- 
+
 uint32_t g_enable_sleep = 0;
-  
+
 void osRtxIdleThread (void) {
-  
+
   for (;;) {
     tc_wakeup = osKernelSuspend();
     /* Is there some time to sleep? */
@@ -576,41 +572,30 @@ void osRtxIdleThread (void) {
 \endcode
 
 \note
-\c __WFE() is not available in every Arm Cortex-M implementation. Check device manuals for availability. 
+\c __WFE() is not available in every Arm Cortex-M implementation. Check device manuals for availability.
 The alternative using \c __WFI() has other issues, please take note of https://www.keil.com/support/docs/3591.htm as well.
 
-\section rtx_os_h RTX5 Header File
-
-Every implementation of the CMSIS-RTOS2 API can bring its own additional features. RTX5 adds a couple of
-\ref rtx5_specific "functions" for the idle more, for error notifications, and special system timer functions. It also is
-using macros for control block and memory sizes.
-
-If you require some of the RTX specific functions in your application code, \#include the header file \b %rtx_os.h:
-
-\include rtx_os.h
-
-
-\section CMSIS_RTOS_TimeOutValue Timeout Value   
+\section CMSIS_RTOS_TimeOutValue Timeout Value
 
 Timeout values are an argument to several \b osXxx functions to allow time for resolving a request. A timeout value of \b 0
 means that the RTOS does not wait and the function returns instantly, even when no resource is available. A timeout value of
 \ref osWaitForever means that the RTOS waits infinitely until a resource becomes available. Or one forces the thread to resume
 using \ref osThreadResume which is discouraged.
- 
-The timeout value specifies the number of timer ticks until the time delay elapses. The value is an upper bound and 
-depends on the actual time elapsed since the last timer tick. 
+
+The timeout value specifies the number of timer ticks until the time delay elapses. The value is an upper bound and
+depends on the actual time elapsed since the last timer tick.
 
 Examples:
-  - timeout value \b 0 : the system does not wait, even when no resource is available the RTOS function returns instantly. 
+  - timeout value \b 0 : the system does not wait, even when no resource is available the RTOS function returns instantly.
   - timeout value \b 1 : the system waits until the next timer tick occurs; depending on the previous timer tick, it may be a
     very short wait time.
   - timeout value \b 2 : actual wait time is between 1 and 2 timer ticks.
-  - timeout value \ref osWaitForever : system waits infinite until a resource becomes available. 
-  
+  - timeout value \ref osWaitForever : system waits infinite until a resource becomes available.
+
 \image html TimerValues.png "Example of timeout using osDelay()"
 
 
-\section CMSIS_RTOS_ISR_Calls Calls from Interrupt Service Routines 
+\section CMSIS_RTOS_ISR_Calls Calls from Interrupt Service Routines
 
 The following CMSIS-RTOS2 functions can be called from threads and Interrupt Service Routines (ISR):
   - \ref osKernelGetInfo, \ref osKernelGetState,
@@ -653,7 +638,7 @@ When executing SVC instructions, the controller changes to the privileged handle
 Interrupts are \b not \b disabled in this mode. To protect SVC functions from interrupts, you need to include the
 disable/enable intrinsic functions \c __disable_irq() and \c __enable_irq() in your code.
 
-You can use SVC functions to access \b protected \b peripherals, for example, to configure NVIC and interrupts. 
+You can use SVC functions to access \b protected \b peripherals, for example, to configure NVIC and interrupts.
 This is required if you run threads in unprivileged (protected) mode and you need to change interrupts from the within the
 thread.
 
@@ -663,14 +648,14 @@ To implement SVC functions in your Keil RTX5 project, you need to:
 -# Write a function implementation. Example:
    \code
    uint32_t svc_atomic_inc32 (uint32_t *mem) {
-     // A protected function to increment a counter. 
+     // A protected function to increment a counter.
      uint32_t val;
-      
+
      __disable_irq();
      val  = *mem;
      (*mem) = val + 1U;
      __enable_irq();
-      
+
      return (val);
    }
    \endcode
@@ -690,19 +675,19 @@ To implement SVC functions in your Keil RTX5 project, you need to:
    \code
    __STATIC_FORCEINLINE uint32_t atomic_inc32 (uint32_t *mem) {
      register uint32_t val;
-	  
+
      __ASM volatile (
        "svc 1" : "=l" (val) : "l" (mem) : "cc", "memory"
      );
      return (val);
    }
    \endcode
-   
+
    \b Code \b Example (Arm Compiler 5 using \c __svc(x) attribute)
    \code
    uint32_t atomic_inc32 (uint32_t *mem) __svc(1);
    \endcode
-    
+
 \note
 - The SVC function \token{0} is \b reserved for the Keil RTX5 kernel.
 - Do not leave gaps when numbering SVC functions. They must occupy a \b continuous range of numbers starting from 1.
@@ -716,9 +701,9 @@ RTX5 provides an interface to the
 <a href="https://developer.arm.com/docs/dui0475/m/the-arm-c-and-c-libraries/multithreaded-support-in-arm-c-libraries" target="_blank">
 <b>Arm C libraries</b></a> to ensure static data protection in a multi-threaded application.
 
-The Arm C libraries use static data to store errno, floating-point status word for software floating-point operations, 
+The Arm C libraries use static data to store errno, floating-point status word for software floating-point operations,
 a pointer to the base of the heap, and other variables. The Arm C micro-library (i.e. microlib) does not support protection
-for multi-threaded applications. See the <a href="https://developer.arm.com/docs/dui0475/m/the-arm-c-micro-library/differences-between-microlib-and-the-default-c-library" target="_blank"> 
+for multi-threaded applications. See the <a href="https://developer.arm.com/docs/dui0475/m/the-arm-c-micro-library/differences-between-microlib-and-the-default-c-library" target="_blank">
 <b>limitations and differences</b></a> between microlib and the default C library.
 
 By default, RTX5 uses the Arm C libraries multi-thread protection for:
@@ -750,7 +735,7 @@ using the CMSIS-RTOS RTX kernel. The configuration options are explained in deta
 - \ref msgQueueConfig provides several parameters to configure the \ref CMSIS_RTOS_Message functions.
 - \ref evtrecConfig provides several parameters to configure RTX for usage with <a href="https://www.keil.com/pack/doc/compiler/EventRecorder/html/index.html" target="_blank"><b>Event Recorder</b></a>.
 
-The file "RTX_Config.c" contains default implementations of the functions \ref osRtxIdleThread and \ref osRtxErrorNotify. Both functions
+The file "RTX_Config.c" contains default implementations of the functions osRtxIdleThread and osRtxErrorNotify. Both functions
 can simply be overwritten with a customized behavior by redefining them as part of the user code.
 
 The configuration file uses <b>Configuration Wizard Annotations</b>. Refer to <b>Pack - Configuration Wizard Annotations</b> for details.
@@ -833,17 +818,17 @@ The RTX5 provides several parameters to configure the \ref CMSIS_RTOS_ThreadMgmt
 <b>Thread Configuration Options</b>
 \image html config_wizard_threads.png "RTX_Config.h: Thread Configuration"
 
-<br> 
+<br>
 Option                                                   | \#define               | Description
 :--------------------------------------------------------------------------|:-------------------------------|:---------------------------------------------------------------
 Object specific Memory allocation                        | \c OS_THREAD_OBJ_MEM   | Enables object specific memory allocation. See \ref ObjectMemoryPool.
 Number of user Threads                                   | \c OS_THREAD_NUM       | Defines maximum number of user threads that can be active at the same time. Applies to user threads with system provided memory for control blocks. Default value is \token{1}. Value range is \token{[1-1000]}.
 Number of user Threads with default Stack size  | \c OS_THREAD_DEF_STACK_NUM     | Defines maximum number of user threads with default stack size and applies to user threads with \token{0} stack size specified. Value range is \token{[0-1000]}.
-Total Stack size [bytes] for user Threads with user-provided Stack size    | \c OS_THREAD_USER_STACK_SIZE | Defines the combined stack size for user threads with user-provided stack size. Default value is \token{0}. Value range is \token{[0-1073741824]} Bytes, in multiples of \token{8}. 
-Default Thread Stack size [bytes]                        | \c OS_STACK_SIZE    | Defines stack size for threads with zero stack size specified. Default value is \token{3072}. Value range is \token{[96-1073741824]} Bytes, in multiples of \token{8}. 
-Idle Thread Stack size [bytes]                           | \c OS_IDLE_THREAD_STACK_SIZE              | Defines stack size for Idle thread. Default value is \token{512}. Value range is \token{[72-1073741824]} bytes, in multiples of \token{8}. 
+Total Stack size [bytes] for user Threads with user-provided Stack size    | \c OS_THREAD_USER_STACK_SIZE | Defines the combined stack size for user threads with user-provided stack size. Default value is \token{0}. Value range is \token{[0-1073741824]} Bytes, in multiples of \token{8}.
+Default Thread Stack size [bytes]                        | \c OS_STACK_SIZE    | Defines stack size for threads with zero stack size specified. Default value is \token{3072}. Value range is \token{[96-1073741824]} Bytes, in multiples of \token{8}.
+Idle Thread Stack size [bytes]                           | \c OS_IDLE_THREAD_STACK_SIZE              | Defines stack size for Idle thread. Default value is \token{512}. Value range is \token{[72-1073741824]} bytes, in multiples of \token{8}.
 Idle Thread TrustZone Module ID                          | \c OS_IDLE_THREAD_TZ_MOD_ID    | Defines the \ref osThreadAttr_t::tz_module "TrustZone Module ID" the Idle Thread shall use. This needs to be set to a non-zero value if the Idle Thread need to call secure functions. Default value is \token{0}.
-Stack overrun checking                                   | \c OS_STACK_CHECK   | Enable stack overrun checks at thread switch. 
+Stack overrun checking                                   | \c OS_STACK_CHECK   | Enable stack overrun checks at thread switch.
 Stack usage watermark                                    | \c OS_STACK_WATERMARK    | Initialize thread stack with watermark pattern for analyzing stack usage. Enabling this option increases significantly the execution time of thread creation.
 Processor mode for Thread execution                      | \c OS_PRIVILEGE_MODE     | Controls the processor mode. Default value is \token{Privileged} mode. Value range is \token{[0=Unprivileged; 1=Privileged]} mode.
 
@@ -870,26 +855,26 @@ Before the RTX kernel is started by the \ref osKernelStart() function, the main 
 used. The main stack is also used for:
  - user application calls to RTX functions in \b thread \b mode using SVC calls
  - interrupt/exception handlers.
- 
+
 \subsection threadConfig_ovfcheck Stack Overflow Checking
 RTX5 implements a software stack overflow checking that traps stack overruns. Stack is used for return addresses and
 automatic variables. Extensive usage or incorrect stack configuration may cause a stack overflow. Software stack overflow
 checking is controlled with the define \c OS_STACK_CHECK.
- 
-If a stack overflow is detected, the function \ref osRtxErrorNotify with error code \ref osRtxErrorStackOverflow is called. By
+
+If a stack overflow is detected, the function osRtxErrorNotify with error code osRtxErrorStackOverflow is called. By
 default, this function is implemented as an endless loop and will practically stop code execution.
 
 \subsection threadConfig_watermark Stack Usage Watermark
 RTX5 initializes thread stack with a watermark pattern (0xCC) when a thread is created. This allows the debugger to determine
 the maximum stack usage for each thread. It is typically used during development but removed from the final application.
 Stack usage watermark is controlled with the define \c OS_STACK_WATERMARK.
-  
+
 Enabling this option significantly increases the execution time of \ref osThreadNew (depends on thread stack size).
- 
+
 \subsection threadConfig_procmode Processor Mode for Thread Execution
 RTX5 allows to execute threads in unprivileged or privileged processor mode. The processor mode is controlled with the
 define \c OS_PRIVILEGE_MODE.
- 
+
 In \b unprivileged processor mode, the application software:
 - has limited access to the MSR and MRS instructions, and cannot use the CPS instruction.
 - cannot access the system timer, NVIC, or system control block.
@@ -907,9 +892,9 @@ RTX5 provides several parameters to configure the \ref CMSIS_RTOS_TimerMgmt func
 
 Name                                   | \#define                 | Description
 ---------------------------------------|--------------------------------|----------------------------------------------------------------
-Object specific Memory allocation      | \c OS_TIMER_OBJ_MEM      | Enables object specific memory allocation. 
+Object specific Memory allocation      | \c OS_TIMER_OBJ_MEM      | Enables object specific memory allocation.
 Number of Timer objects                | \c OS_TIMER_NUM          | Defines maximum number of objects that can be active at the same time. Applies to objects with system provided memory for control blocks. Value range is \token{[1-1000]}.
-Timer Thread Priority                  | \c OS_TIMER_THREAD_PRIO        | Defines priority for timer thread. Default value is \token{40}. Value range is \token{[8-48]}, in multiples of \token{8}. The numbers have the following priority correlation: \token{8=Low}; \token{16=Below Normal}; \token{24=Normal}; \token{32=Above Normal}; \token{40=High}; \token{48=Realtime} 
+Timer Thread Priority                  | \c OS_TIMER_THREAD_PRIO        | Defines priority for timer thread. Default value is \token{40}. Value range is \token{[8-48]}, in multiples of \token{8}. The numbers have the following priority correlation: \token{8=Low}; \token{16=Below Normal}; \token{24=Normal}; \token{32=Above Normal}; \token{40=High}; \token{48=Realtime}
 Timer Thread Stack size [bytes]        | \c OS_TIMER_THREAD_STACK_SIZE  | Defines stack size for Timer thread. May be set to 0 when timers are not used. Default value is \token{512}. Value range is \token{[0-1073741824]}, in multiples of \token{8}.
 Timer Thread TrustZone Module ID       | \c OS_TIMER_THREAD_TZ_MOD_ID   | Defines the \ref osThreadAttr_t::tz_module "TrustZone Module ID" the Timer Thread shall use. This needs to be set to a non-zero value if any Timer Callbacks need to call secure functions. Default value is \token{0}.
 Timer Callback Queue entries           | \c OS_TIMER_CB_QUEUE           | Number of concurrent active timer callback functions. May be set to 0 when timers are not used. Default value is \token{4}. Value range is \token{[0-256]}.
@@ -921,7 +906,7 @@ See \ref ObjectMemoryPool.
 The RTX5 function \b osRtxTimerThread executes callback functions when a time period expires. The priority of the timer
 subsystem within the complete RTOS system is inherited from the priority of the \b osRtxTimerThread. This is configured by
 \c OS_TIMER_THREAD_PRIO. Stack for callback functions is supplied by \b osRtxTimerThread. \c OS_TIMER_THREAD_STACK_SIZE must
-satisfy the stack requirements of the callback function with the highest stack usage. 
+satisfy the stack requirements of the callback function with the highest stack usage.
 
 
 \section eventFlagsConfig Event Flags Configuration
@@ -1080,7 +1065,7 @@ Mutex             | \c OS_EVR_MUTEX_LEVEL      | Recording level for Mutex event
 Semaphore         | \c OS_EVR_SEMAPHORE_LEVEL  | Recording level for Semaphore events.
 Memory Pool       | \c OS_EVR_MEMPOOL_LEVEL    | Recording level for Memory Pool events.
 Message Queue     | \c OS_EVR_MSGQUEUE_LEVEL   | Recording level for Message Queue events.
- 
+
 
 \subsection evtrecConfigEvtGen RTOS Event Generation
 
@@ -1111,7 +1096,7 @@ component will have no effect and the debugger is unable to display any events f
 
 \subsection systemConfig_event_recording Manual event configuration
 
-To disable the generation of events for a specific RTX API call, use the following \#define settings (from <b>rtx_evr.h</b>) and add these manually 
+To disable the generation of events for a specific RTX API call, use the following \#define settings (from <b>rtx_evr.h</b>) and add these manually
 to the <b>RTX_Config.h</b> file:
 
 \b Memory \b events \n
@@ -1142,7 +1127,7 @@ to the <b>RTX_Config.h</b> file:
 
 \b Generic \b wait \b events \n
 \c EVR_RTX_DELAY_ERROR_DISABLE, \c EVR_RTX_DELAY_DISABLE, \c EVR_RTX_DELAY_UNTIL_DISABLE,
-\c EVR_RTX_DELAY_STARTED_DISABLE, \c EVR_RTX_DELAY_UNTIL_STARTED_DISABLE, \c EVR_RTX_DELAY_COMPLETED_DISABLE 
+\c EVR_RTX_DELAY_STARTED_DISABLE, \c EVR_RTX_DELAY_UNTIL_STARTED_DISABLE, \c EVR_RTX_DELAY_COMPLETED_DISABLE
 
 \b Thread \b flag \b events \n
 \c EVR_RTX_THREAD_FLAGS_ERROR_DISABLE, \c EVR_RTX_THREAD_FLAGS_SET_DISABLE, \c EVR_RTX_THREAD_FLAGS_SET_DONE_DISABLE,
@@ -1206,7 +1191,7 @@ to the <b>RTX_Config.h</b> file:
 
 
 /* ========================================================================================================================== */
-/** 
+/**
 \ifnot FuSaRTS
 \page creating_RTX5_LIB Building the RTX5 Library
 
@@ -1214,7 +1199,7 @@ The CMSIS Pack contains a µVision project for building the complete set of RTX5
 a reference for building the RTX5 libraries using a tool-chain of your choice.
 
 -# Open the project \b RTX_CM.uvprojx from the pack folder <b>CMSIS/RTOS2/RTX/Library/ARM/MDK</b> in µVision.
--# Select the project target that matches your device's processor core. 
+-# Select the project target that matches your device's processor core.
    \n The project provides target configuration for all supported Cortex-M targets supported by RTX5.
 -# You can find out about the required preprocessor defines in the dialogs <b>Options for Target - C/C++</b> and
    <b>Options for Target - Asm</b>. Note the need to use at least the C99 compiler mode when building RTX from source.
@@ -1228,13 +1213,13 @@ a reference for building the RTX5 libraries using a tool-chain of your choice.
 
 
 /* ========================================================================================================================== */
-/** 
+/**
 \page technicalData5 Technical Data
 
 The following section contains technical information about RTX v5.
 
  - \subpage pHardwareRequirements lists the resource requirements of the RTX v5 kernel along with hardware dependencies.
- - \subpage pStackRequirements lists the memory requirements for the main stack when running the RTX v5 kernel. 
+ - \subpage pStackRequirements lists the memory requirements for the main stack when running the RTX v5 kernel.
  - \subpage pControlBlockSizes provides memory size information for \ref StaticObjectMemory "object-specific control block memory allocation".
  - \subpage pDirectory_Files is an overview of the supplied files that belong to RTX v5
  - \subpage pToolchains details about the compiler support \ifnot FuSaRTS which includes ArmCC (MDK, DS-5), IAR EW-ARM, and GCC. \endif
@@ -1263,37 +1248,37 @@ Core Registers             | The processor status is read using the following co
 System Control Block (SBC) | To control and setup the processor exceptions including PendSV and SVC
 Interrupt Control          | The CMSIS-Core functions __disable_irq and __enable_irq to control the interrupt system via the CPSR core register.
 
-The RTX implements interfaces to the processor hardware in following files: 
+The RTX implements interfaces to the processor hardware in following files:
  - <b>%irq_armv6m.s</b> defines exception handlers for Cortex-M0/M0+
 \if ARMv8M
  - <b>%irq_armv8mbl.s</b> defines exception handlers for Cortex-M23
-\endif 
+\endif
  - <b>%rtx_core_cm.h</b> defines processor specific helper functions and the interfaces to Core Registers and Core Peripherals.
  - <b>%os_tick.h</b> is the \ref CMSIS_RTOS_TickAPI that defines the interface functions to the SysTick timer.
 
 \note
- - The CMSIS-Core variable \c SystemCoreClock is used by RTX to configure the SysTick timer. 
+ - The CMSIS-Core variable \c SystemCoreClock is used by RTX to configure the SysTick timer.
 
 \if ARMv8M \subsection tpCortexM3_M4_M7_M33_M35P Cortex-M3/M4/M7/M33/M35P target processor
-\endif 
+\endif
 
 \ifnot ARMv8M \subsection tpCortexM3_M4_M7_M33_M35P Cortex-M3/M4/M7 target processor
-\endif 
+\endif
 
 RTX assumes a fully function-able processor and uses the following hardware features:
 
 Hardware Item       | Requirement Description
 :--------------------------|:------------------------------------------------------
-SysTick timer              | The \b SysTick timer shall be available in the processor. 
+SysTick timer              | The \b SysTick timer shall be available in the processor.
 System Exceptions          | The RTX requires \b SVC, \b PendSV, and \b SysTick exceptions and implements corresponding exception handlers.
-Core Registers             | The RTX uses \b CONTROL, \b IPSR , \b PRIMASK and \b BASEPRI core registers for reading processor status. 
+Core Registers             | The RTX uses \b CONTROL, \b IPSR , \b PRIMASK and \b BASEPRI core registers for reading processor status.
 System Control Block (SCB) | The RTX uses \b SCB registers to control and setup the processor system exceptions including PendSV and SVC.
 NVIC Interface             | CMSIS-Core function \b NVIC_GetPriorityGrouping is used by the RTX to setup interrupt priorities.
 LDREX, STREX instructions  | Exclusive access instructions \b LDREX and \b STREX are used to implement atomic execution without disabling interrupts.
 
-The interface files to the processor hardware are: 
+The interface files to the processor hardware are:
  - <b>%irq_armv7m.s</b> defines exception handlers for Cortex-M3 and Cortex-M4/M7.
-\if ARMv8M 
+\if ARMv8M
  - <b>%irq_armv8mml.s</b> defines exception handlers for Cortex-M33/M35P
 \endif
  - <b>%rtx_core_cm.h</b> defines processor specific helper functions and the interfaces to Core Registers and Core Peripherals.
@@ -1313,7 +1298,7 @@ Core Registers             | The processor status is read using the following co
 LDREX, STREX instruction   | Atomic execution avoids the requirement to disable interrupts and is implemented via exclusive access instructions.
 Interrupt Controller       | An interrupt controller interface is required to setup and control Timer Peripheral interrupt. The interface for Arm GIC (Generic Interrupt Controller) is implemented in %irq_ctrl_gic.c using the <a class="el" href="../../Core_A/html/group__irq__ctrl__gr.html">IRQ Controller API</a>.
 
-The interface files to the processor hardware are: 
+The interface files to the processor hardware are:
  - <b>%irq_armv7a.s</b> defines SVC, IRQ, Data Abort, Prefetch Abort and Undefined Instruction exception handlers.
  - <b>%rtx_core_ca.h</b> defines processor specific helper functions and the interfaces to Core Registers and Core Peripherals.
  - <b>%os_tick.h</b> is the \ref CMSIS_RTOS_TickAPI that defines the interface functions to the timer peripheral.
@@ -1324,8 +1309,8 @@ The interface files to the processor hardware are:
 \endif
 
 \section rMemory Memory Requirements
-RTX requires RAM memory that is accessible with contiguous linear addressing.  When memory is split across multiple memory banks, some systems 
-do not accept multiple load or store operations on this memory blocks. 
+RTX requires RAM memory that is accessible with contiguous linear addressing.  When memory is split across multiple memory banks, some systems
+do not accept multiple load or store operations on this memory blocks.
 
 RTX does not implement any confidence test for memory validation. This should be implemented by an user-supplied software test library.
 
@@ -1333,7 +1318,7 @@ RTX does not implement any confidence test for memory validation. This should be
 \page pStackRequirements Stack Requirements
 
 Keil RTX v5 kernel functions are executed in handler mode (using PendSV/SysTick/SVC) and the tables below lists the maximum stack requirements for the Main Stack (MSP) that the user
-should consider. 
+should consider.
 
 The stack for the \ref osKernelStart function is referred as "Startup" and RTX v5 uses 32 bytes (with Arm Compiler). However the user should also consider additional stack that
 might be allocated by the 'main' function of the embedded application. The following picture shows a worst-case memory allocation of the Main Stack.
@@ -1347,7 +1332,7 @@ The stack requirements depend on the compiler and the optimization level.  RTX v
 
 Optimization         | RTX Kernel  | RTX Kernel + Event Recorder
 :--------------------|:------------|:--------------------------------
--O1 (Debug)          | 152 bytes   | 280 bytes   
+-O1 (Debug)          | 152 bytes   | 280 bytes
 -Os (Balanced)       | 120 bytes   | 256 bytes
 -Oz (Size)           | 112 bytes   | 248 bytes
 
@@ -1355,7 +1340,7 @@ Optimization         | RTX Kernel  | RTX Kernel + Event Recorder
 
 Optimization         | RTX Kernel  | RTX Kernel + Event Recorder
 :--------------------|:------------|:--------------------------------
--O0 (Debug)          | 176 bytes   | 360 bytes   
+-O0 (Debug)          | 176 bytes   | 360 bytes
 -O1                  | 112 bytes   | 248 bytes
 -O2                  | 112 bytes   | 256 bytes
 -O3                  | 112 bytes   | 248 bytes
@@ -1377,13 +1362,13 @@ The following table lists the control block sizes:
 
 Category                      | Control Block Size Attribute      | Size       | \#define symbol
 :-----------------------------|:----------------------------------|:-----------|:--------------------
-\ref CMSIS_RTOS_ThreadMgmt    | \ref osThreadAttr_t::cb_mem       | 68 bytes   | \ref osRtxThreadCbSize
-\ref CMSIS_RTOS_TimerMgmt     | \ref osTimerAttr_t::cb_mem        | 32 bytes   | \ref osRtxTimerCbSize
-\ref CMSIS_RTOS_EventFlags    | \ref osEventFlagsAttr_t::cb_mem   | 16 bytes   | \ref osRtxEventFlagsCbSize
-\ref CMSIS_RTOS_MutexMgmt     | \ref osMutexAttr_t::cb_mem        | 28 bytes   | \ref osRtxMutexCbSize
-\ref CMSIS_RTOS_SemaphoreMgmt | \ref osSemaphoreAttr_t::cb_mem    | 16 bytes   | \ref osRtxSemaphoreCbSize
-\ref CMSIS_RTOS_PoolMgmt      | \ref osMemoryPoolAttr_t::cb_mem   | 36 bytes   | \ref osRtxMemoryPoolCbSize
-\ref CMSIS_RTOS_Message       | \ref osMessageQueueAttr_t::cb_mem | 52 bytes   | \ref osRtxMessageQueueCbSize
+\ref CMSIS_RTOS_ThreadMgmt    | \ref osThreadAttr_t::cb_mem       | 68 bytes   | osRtxThreadCbSize
+\ref CMSIS_RTOS_TimerMgmt     | \ref osTimerAttr_t::cb_mem        | 32 bytes   | osRtxTimerCbSize
+\ref CMSIS_RTOS_EventFlags    | \ref osEventFlagsAttr_t::cb_mem   | 16 bytes   | osRtxEventFlagsCbSize
+\ref CMSIS_RTOS_MutexMgmt     | \ref osMutexAttr_t::cb_mem        | 28 bytes   | osRtxMutexCbSize
+\ref CMSIS_RTOS_SemaphoreMgmt | \ref osSemaphoreAttr_t::cb_mem    | 16 bytes   | osRtxSemaphoreCbSize
+\ref CMSIS_RTOS_PoolMgmt      | \ref osMemoryPoolAttr_t::cb_mem   | 36 bytes   | osRtxMemoryPoolCbSize
+\ref CMSIS_RTOS_Message       | \ref osMessageQueueAttr_t::cb_mem | 52 bytes   | osRtxMessageQueueCbSize
 
 
 \page pDirectory_Files Directory Structure and File Overview
@@ -1394,7 +1379,7 @@ ARM/CMSIS/<i>version</i>/CMSIS/RTOS2.
 
 \section Folders RTX v5 Directory Structure
 
-The CMSIS-RTOS RTX v5 is delivered in source code and several examples are provided. 
+The CMSIS-RTOS RTX v5 is delivered in source code and several examples are provided.
 
 <table class="cmtable" summary="CMSIS-RTOS RTX Library Files">
     <tr>
@@ -1442,7 +1427,7 @@ The CMSIS-RTOS RTX v5 is delivered in source code and several examples are provi
       <td>RTX/Library</td>
       <td>Pre-built libraries (see next table for details).</td>
     </tr>
-\endif	
+\endif
     <tr>
       <td>RTX/Source</td>
       <td>Source code.</td>
@@ -1453,7 +1438,7 @@ The CMSIS-RTOS RTX v5 is delivered in source code and several examples are provi
     </tr>
 </table>
 
-\ifnot FuSaRTS 
+\ifnot FuSaRTS
 \section libFiles RTX v5 Library Files
 
 The CMSIS-RTOS RTX Library is available pre-compiled for ARMCC and GCC compilers and supports all Cortex-M
@@ -1516,7 +1501,7 @@ processor variants in every configuration  \if ARMv8M , including Arm Cortex-M23
       <td>CMSIS-RTOS libRTX Library for GCC Compiler, Cortex-M4 and M7 with FPU, little-endian.</td>
     </tr>
 \endif
-\if ARMv8M	
+\if ARMv8M
     <tr>
       <td>Library/GCC/libRTX_V8MB.a</td>
       <td>CMSIS-RTOS libRTX Library for GCC Compiler, Armv8-M Baseline.</td>
@@ -1593,21 +1578,21 @@ Active development is currently tested with:
 
 
 /* ========================================================================================================================== */
-/** 
+/**
 \page CodingRules Coding Rules
 
 \ifnot FuSaRTS
 CMSIS components use <a href="../../General/html/index.html#CodingRules"><b>general coding rules</b></a> across the various components.
-\endif 
+\endif
 
 \if FuSaRTS
 FuSa RTX RTOS uses <a href="../../Safety/html/index.html#CodingRules"><b>general coding rules</b></a>.
-\endif 
+\endif
 
 The CMSIS-RTOS2 API is using the following <b>Namespace</b> prefixes:
   - <b>os</b> for all definitions and function names.
   - <b>os</b> with postfix <b>_t</b> for all typedefs.
-  
+
 The CMSIS-RTOS2 RTX v5 implementation is using the following <b>Namespace</b> prefixes for public symbol definitions:
   - <b>osRtx</b> for all general definitions and function names that relate to the RTX kernel.
   - <b>osRtx</b> with postfix <b>_t</b> for all typedefs.
@@ -1616,12 +1601,12 @@ The CMSIS-RTOS2 RTX v5 implementation is using the following <b>Namespace</b> pr
 */
 
 /* ========================================================================================================================== */
-/** 
-\page misraCompliance5 MISRA C:2012 Compliance 
+/**
+\page misraCompliance5 MISRA C:2012 Compliance
 The RTX5 C source files use <b><a class=el href="http://www.misra.org.uk/" target="_blank">MISRA C:2012</a></b> guidelines as underlying coding standard.
 
 For MISRA validation, <b><a class=el href="http://www.gimpel.com/" target="_blank">PC-lint</a></b> V9.00L is used with configuration for Arm Compiler V6.16.
-The PC-Lint validation setup is part of the project file <b>.\\CMSIS\\RTOS2\\RTX\\Library\\ARM\\MDK\\RTX_CM.uvprojx</b> as shown below. 
+The PC-Lint validation setup is part of the project file <b>.\\CMSIS\\RTOS2\\RTX\\Library\\ARM\\MDK\\RTX_CM.uvprojx</b> as shown below.
 Refer to <b><a class=el href="https://www.keil.com/support/man/docs/uv4/uv4_ut_pclint_validation.htm" target="_blank">Setup for PC-Lint</a></b> for more information.
 
 \image html "PC-Lint.png" "Running PC-Lint within MDK - uVision"
@@ -1637,13 +1622,13 @@ The PC-Lint configuration uses the following Options under <b>Tools - PC-Lint Se
    +doffsetof(t,m)=((size_t)&((t*)0)->m)
    -emacro((413,923,9078),offsetof)
 \endcode
- - Included Project Information: 
+ - Included Project Information:
    - Enable: Add 'Include' paths
    - Enable: Add 'Software Packs' paths
    - Enable: Verify 'Software Packs' includes
    - Enable: Add 'Preprocessor' symbols
    - Enable: Add 'Define' symbols
- - MISRA  Rules Setup and Configuration: 
+ - MISRA  Rules Setup and Configuration:
    - MISRQ_C_2012_Config.lnt; all rules enabled
    - includes definition file: au-misra3.lnt (12-Jun-2014)
  - Additional Lint Commands (for both single and multiple files):
@@ -1653,7 +1638,7 @@ The PC-Lint configuration uses the following Options under <b>Tools - PC-Lint Se
 
 The C source code is annotated with PC-Lint control comments to allows MISRA deviations.
 These deviations with the underlying design decisions are described in the following.
-   
+
 Deviations
 ----------
 
@@ -1696,10 +1681,10 @@ keeps the source code better structured and easier to understand.
 This design decision implies the following MISRA deviation:
  - [MISRA 2012 Rule      15.5,  advisory]: A function should have a single point of exit at the end
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{904} "Return statement before end of function" [MISRA Note 1]
-\endcode 
+\endcode
 
 
 \section MISRA_2 [MISRA Note 2]: Object identifiers are void pointers
@@ -1712,10 +1697,10 @@ This design decisions imply the following MISRA deviations:
  - [MISRA 2012 Rule      11.3,  required]: A cast shall not be performed between a pointer to object type and a pointer to a different object type
  - [MISRA 2012 Rule      11.5,  advisory]: A conversion should not be performed from pointer to void into pointer to object
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 2]
-\endcode 
+\endcode
 
 In the RTX5 implementation the required pointer conversions are implemented in the header file rtx_lib.h with the following inline functions:
 
@@ -1734,17 +1719,17 @@ osRtxMessageQueue_t *osRtxMessageQueueId(osMessageQueueId_t mq_id);
 RTX uses a unified object control block structure that contains common object members.
 The unified control blocks use a fixed layout at the beginning of the structure and starts always with an object identifier.
 This allows common object functions that receive a pointer to a unified object control block and reference only the
-pointer or the members in the fixed layout. Using common object functions and data (for example the ISR queue) reduces 
+pointer or the members in the fixed layout. Using common object functions and data (for example the ISR queue) reduces
 code complexity and keeps the source code better structured.  Refer also to \ref MISRA_4
 
 This design decisions imply the following MISRA deviations:
  - [MISRA 2012 Rule      11.3,  required]: A cast shall not be performed between a pointer to object type and a pointer to a different object type
  - [MISRA 2012 Rule      11.5,  advisory]: A conversion should not be performed from pointer to void into pointer to object
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{9079} -e{9087} "cast from pointer to void to pointer to object type" [MISRA Note 3]
-\endcode 
+\endcode
 
 
 In the RTX5 implementation the required pointer conversions are implemented in the header file \em rtx_lib.h with the following inline function:
@@ -1765,10 +1750,10 @@ This design decisions imply the following MISRA deviations:
 In addition PC-Lint issues:
  - Info  826: Suspicious pointer-to-pointer conversion (area too small)
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{740} -e{826} -e{9087} "cast from pointer to generic object to specific object" [MISRA Note 4]
-\endcode 
+\endcode
 
 In the RTX5 source code the required pointer conversions are implemented in the header file \em rtx_lib.h with the following inline functions:
 
@@ -1785,20 +1770,20 @@ osRtxMessage_t      *osRtxMessageObject (osRtxObject_t *object);
 
 \section MISRA_5 [MISRA Note 5]: Conversion to object types
 
-The RTX5 kernel has common memory management functions that use void pointers. These memory allocation functions return 
+The RTX5 kernel has common memory management functions that use void pointers. These memory allocation functions return
 a void pointer which is correctly aligned for object types.
 
 This design decision implies the following MISRA deviations:
  - [MISRA 2012 Rule      11.5,  advisory]: A conversion should not be performed from pointer to void into pointer to object
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{9079} "conversion from pointer to void to pointer to other type" [MISRA Note 5]
-\endcode 
+\endcode
 
 Code example:
 
-\code 
+\code
   os_thread_t  *thread;
    :
   //lint -e{9079} "conversion from pointer to void to pointer to other type" [MISRA Note 5]
@@ -1809,17 +1794,17 @@ Code example:
 
 CMSIS-RTOS2 and RTX5 support user provided storage for object control blocks, stack, and data storage.
 The API uses void pointers to define the location of this user provided storage. It is therefore
-required to cast the void pointer to underlying storage types. Alignment restrictions of user provided storage 
+required to cast the void pointer to underlying storage types. Alignment restrictions of user provided storage
 are checked before accessing memory. Refer also to \ref MISRA_7.
 
 This design decisions imply the following MISRA deviations:
  - [MISRA 2012 Rule      11.3,  required]: A cast shall not be performed between a pointer to object type and a pointer to a different object type
  - [MISRA 2012 Rule      11.5,  advisory]: A conversion should not be performed from pointer to void into pointer to object
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{9079} "conversion from pointer to void to pointer to other type" [MISRA Note 6]
-\endcode 
+\endcode
 
 Code example:
 \code
@@ -1842,7 +1827,7 @@ This design decision implies the following MISRA deviations:
  - [MISRA 2012 Rule      11.4,  advisory]: A conversion should not be performed between a pointer to object and an integer type
  - [MISRA 2012 Rule      11.6,  required]: A cast shall not be performed between pointer to void and an arithmetic type
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{923} -e{9078} "cast from pointer to unsigned int" [MISRA Note 7]
 \endcode
@@ -1868,7 +1853,7 @@ This design decision implies the following MISRA deviations:
  - [MISRA 2012 Rule      11.4,  advisory]: A conversion should not be performed between a pointer to object and an integer type
  - [MISRA 2012 Rule      11.6,  required]: A cast shall not be performed between pointer to void and an arithmetic type
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -e{923} -e{9078} "cast from pointer to unsigned int" [MISRA Note 8]
 \endcode
@@ -1889,14 +1874,14 @@ __STATIC_INLINE mem_block_t *MemBlockPtr (void *mem, uint32_t offset) {
 
 \section MISRA_9 [MISRA Note 9]: Pointer conversions for register access
 
-The CMSIS-Core peripheral register blocks are accessed using a structure. The memory address of this structure 
+The CMSIS-Core peripheral register blocks are accessed using a structure. The memory address of this structure
 is specified as unsigned integer number. Pointer conversions are required to access the specific registers.
 
 This design decision implies the following MISRA deviations:
  - [MISRA 2012 Rule      11.4,  advisory]: A conversion should not be performed between a pointer to object and an integer type
  - [MISRA 2012 Rule      11.6,  required]: A cast shall not be performed between pointer to void and an arithmetic type
 
-All locations in the source code are marked with: 
+All locations in the source code are marked with:
 \code
   //lint -emacro((923,9078),SCB) "cast from unsigned long to pointer" [MISRA Note 9]
 \endcode
@@ -1917,7 +1902,7 @@ RTX5 is using SVC (Service Calls) to switch between thread mode (for user code e
 The SVC function call mechanism is implemented with assembly instructions to construct the code for SVC.
 The source code uses C macros and are designed as C function-like macros to generate parameter passing
 for variables depending on macro parameters. An alternative replacement code would be complex.
-The C macros use multiple '##' operators however it has been verified that the order of evaluation is irrelevant 
+The C macros use multiple '##' operators however it has been verified that the order of evaluation is irrelevant
 and result of macro expansion is always predictable.
 
 This design decision implies the following MISRA deviations:
@@ -1925,7 +1910,7 @@ This design decision implies the following MISRA deviations:
  - [MISRA 2012 Rule       1.3,  required]: There shall be no occurrence of undefined or critical unspecified behavior
  - [MISRA 2012 Rule      20.10, advisory]: The # and ## preprocessor operators should not be used
 
-The relevant source code is in the file \em rtx_core_cm.h and is marked with: 
+The relevant source code is in the file \em rtx_core_cm.h and is marked with:
 \code
   //lint -save -e9023 -e9024 -e9026 "Function-like macros using '#/##'" [MISRA Note 10]
 \endcode
@@ -1934,11 +1919,11 @@ The relevant source code is in the file \em rtx_core_cm.h and is marked with:
 \section MISRA_11 [MISRA Note 11]: SVC calls use assembly code
 
 The SVC (Service Call) functions are constructed as a mix of C and inline assembly as it is required to access CPU registers
-for parameter passing. The function parameters are mapped to the CPU registers R0..R3 and SVC function number to 
+for parameter passing. The function parameters are mapped to the CPU registers R0..R3 and SVC function number to
 CPU register R12 (or R7). For assembly inter-working the function parameters are casted to unsigned int values.
 
-The function return value after SVC call is mapped to the CPU register R0. Return value is casted from unsigned int 
-to the target value. 
+The function return value after SVC call is mapped to the CPU register R0. Return value is casted from unsigned int
+to the target value.
 
 It has been verified that this method has no side-effects and is well defined.
 
@@ -1949,7 +1934,7 @@ This design decision implies the following MISRA deviations:
  - [MISRA 2012 Rule      11.4,  advisory]: A conversion should not be performed between a pointer to object and an integer type
  - [MISRA 2012 Rule      11.6,  required]: A cast shall not be performed between pointer to void and an arithmetic type
 
-SVC functions are marked as library modules and not processed by PC-lint. The relevant source code is marked with: 
+SVC functions are marked as library modules and not processed by PC-lint. The relevant source code is marked with:
 \code
   //lint ++flb "Library Begin" [MISRA Note 11]
     :
@@ -1985,7 +1970,7 @@ PC-lint cannot process assembler instructions including the input/output operand
 
 It has been verified that atomic operations have no side-effects and are well defined.
 
-The functions that implement atomic instructions are marked as library modules and not processed by PC-lint. The relevant source code is marked with: 
+The functions that implement atomic instructions are marked as library modules and not processed by PC-lint. The relevant source code is marked with:
 \code
   //lint ++flb "Library Begin" [MISRA Note 12]
     :
@@ -1997,11 +1982,11 @@ The functions that implement atomic instructions are marked as library modules a
 
 The Event Recorder is a generic event logger and the related functions are called to record an event.
 The function parameters are 32-bit id, 32-bit values, pointer to void (data) and are recorded as 32-bit numbers.
-The parameters for the Event Recorder may require cast operations to unsigned int which however has no side-effects 
-and is well defined. 
+The parameters for the Event Recorder may require cast operations to unsigned int which however has no side-effects
+and is well defined.
 
-The return value indicates success or failure. There is no need to check the return value since no action is 
-taken when an Event Recorder function fail. The EventID macro (part of external Event Recorder) constructs the 
+The return value indicates success or failure. There is no need to check the return value since no action is
+taken when an Event Recorder function fail. The EventID macro (part of external Event Recorder) constructs the
 ID based on input parameters which are shifted, masked with '&' and combined with '|'.
 Zero value input parameters are valid and cause zero used with '&' and '|'.
 
@@ -2027,7 +2012,7 @@ The functions that call the Event Recorder are in the module \em rtx_evr.c and t
 CMSIS-RTOS2 provides following API interfaces:
   - \subpage rtos_api2 is the C function interface that supports dynamic object creation \if ARMv8M and Armv8-M (Arm Cortex-M23,
     Cortex-M33 and Cortex-M35P) \endif.
-\ifnot FuSaRTS	
+\ifnot FuSaRTS
   - <a class="el" href="../../RTOS/html/functionOverview.html">CMSIS-RTOS C API v1</a> is a C function API that is backward
     compatible with CMSIS-RTOS v1.
   - \subpage rtos_apicpp is a C++ class function API (future extension).
@@ -2044,7 +2029,7 @@ CMSIS-RTOS2 defines also a generic system timer interface that works across the 
 /**
 \page rtos_api2 CMSIS-RTOS C API v2
 
-Overview of all CMSIS-RTOS C API v2 functions that are implemented in the \subpage cmsis_os2_h. 
+Overview of all CMSIS-RTOS C API v2 functions that are implemented in the \subpage cmsis_os2_h.
 
 \section rtos_api2_basics Common Design Concepts
 
@@ -2103,7 +2088,7 @@ set to \token{0}, i.e. usage of try-semantics.
 Objects that are not needed anymore can be destructed on demand to free the control block memory. Objects
 are not destructed implicitly. Thus one can assume an object id to be valid until `osXxxDelete` is called
 explicitly. The delete function finally frees the control block memory. In case of user provided control
-block memory, see above, the memory must be freed manually as well. 
+block memory, see above, the memory must be freed manually as well.
 
 The only exception one has to take care of are Threads which do not have an explicit `osThreadDelete` function.
 Threads can either be `detached` or `joinable`. Detached threads are automatically destroyed on termination,
@@ -2211,11 +2196,6 @@ threads are kept alive until one explicitly calls \ref osThreadJoin.
    - \ref osMessageQueueNew : \copybrief osMessageQueueNew
    - \ref osMessageQueuePut : \copybrief osMessageQueuePut
    - \ref osMessageQueueReset : \copybrief osMessageQueueReset
- 
-\todo restructure
- - \ref rtx5_specific
-   - \ref osRtxErrorNotify : \copybrief osRtxErrorNotify
-   - \ref osRtxIdleThread : \copybrief osRtxIdleThread
 
 The following CMSIS-RTOS C API v2 functions can be called from threads and \ref CMSIS_RTOS_ISR_Calls "Interrupt Service Routines"
 (ISR):
@@ -2262,11 +2242,11 @@ It provides a generic interface to a kernel system tick timer and defines the fo
 
 
 /* ======================================================================================================================== */
-// Group creation for Reference 
-/* 
+// Group creation for Reference
+/*
 \addtogroup CMSIS_RTOS1 CMSIS-RTOS API v1
-\brief This section describes the CMSIS-RTOS API v1. 
-\details 
+\brief This section describes the CMSIS-RTOS API v1.
+\details
 The CMSIS-RTOS is a generic API layer that interfaces to an existing RTOS kernel.
 
 CMSIS-RTOS2 provides an translation layer for the
@@ -2275,11 +2255,11 @@ CMSIS-RTOS2 provides an translation layer for the
 Refer to the <a class="el" href="../../RTOS/html/modules.html">Reference</a> guide of the CMSIS-RTOS API v1 for details.
 */
 
-// Group creation for Reference 
-/** 
+// Group creation for Reference
+/**
 \addtogroup CMSIS_RTOS CMSIS-RTOS API v2
 \brief C interface of \ref rtos_api2 defined in cmsis_os2.h
-\details 
+\details
 The CMSIS-RTOS2 is a generic API layer that interfaces to an RTOS kernel.
 
 The complete API interface is defined in the \ref cmsis_os2_h. When using dynamic memory allocation for objects, source code
@@ -2296,7 +2276,7 @@ Refer to \ref rtos_api2_basics for further details.
 The \ref CMSIS_RTOS offers two options for memory management the user can choose. For object storage one can either use
  - \ref CMSIS_RTOS_MemoryMgmt_Automatic (fully portable), or
  - \ref CMSIS_RTOS_MemoryMgmt_Manual (implementation specific).
- 
+
 In order to affect the memory allocation scheme all RTOS objects that can be created on request, i.e. those having a `osXxxNew`
 function, accept an optional `osXxxAttr_t attr` argument on creation. As a rule of thumb the object attributes at least have
 members to assign custom control block memory, i.e. `cb_mem` and `cb_size` members. By default, i.e. `attr` is `NULL`
@@ -2314,20 +2294,20 @@ deleted at runtime this class of runtime failures can be prevented, though.
 
 The actual allocation strategy used is implementation specific, i.e. whether global heap or preallocated memory pools are used.
 
-<b> Code Example:</b> 
+<b> Code Example:</b>
 \code{.c}
 #include "cmsis_os2.h"                          // implementation agnostic
-  
+
 osMutexId_t mutex_id;
 osMutexId_t mutex2_id;
-  
+
 const osMutexAttr_t Thread_Mutex_attr = {
   "myThreadMutex",                              // human readable mutex name
   osMutexRecursive | osMutexPrioInherit,        // attr_bits
   NULL,                                         // memory for control block (default)
   0U                                            // size for control block (default)
 };
-  
+
 void CreateMutex (void)  {
   mutex_id = osMutexNew(NULL);                  // use default values for all attributes
   mutex2_id = osMutexNew(&Thread_Mutex_attr);   // use attributes from defined structure
@@ -2344,21 +2324,21 @@ The actual requirements such user-defined memory are implementation specific. Th
 needs to carefully refer to the size and alignment rules of the implementation used, e.g.
 for RTX see \ref StaticObjectMemory.
 
-<b> Code Example:</b> 
+<b> Code Example:</b>
 \code{.c}
 #include "rtx_os.h"                             // implementation specific
-  
+
 osMutexId_t mutex_id;
-  
+
 static osRtxMutex_t mutex_cb __attribute__((section(".bss.os.mutex.cb")));  // Placed on .bss.os.mutex.cb section for RTX5 aware debugging
-  
+
 const osMutexAttr_t Thread_Mutex_attr = {
   "myThreadMutex",                              // human readable mutex name
   osMutexRecursive | osMutexPrioInherit,        // attr_bits
   &mutex_cb,                                    // memory for control block (user-defined)
   sizeof(mutex_cb)                              // size for control block (user-defined)
 };
-  
+
 void CreateMutex (void)  {
   mutex_id = osMutexNew(&Thread_Mutex_attr);    // use attributes from defined structure
   :
@@ -2370,11 +2350,11 @@ implementation used one needs to include the specific header file, `rtx_os.h` in
 
 */
 
-// Group creation for Reference 
-/** 
+// Group creation for Reference
+/**
 \addtogroup CMSIS_RTOS CMSIS-RTOS API v2
 \brief C interface of \ref rtos_api2 defined in <b>%cmsis_os2.h</b>
-\details 
+\details
 The CMSIS-RTOS2 is a generic API layer that interfaces to an RTOS kernel.
 
 The complete API interface is defined in the \ref cmsis_os2_h. When using dynamic memory allocation for objects, source code

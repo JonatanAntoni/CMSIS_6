@@ -1,10 +1,10 @@
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 //  ==== Message Queue Management ====
-/** 
+/**
 @addtogroup CMSIS_RTOS_Message Message Queue
 @ingroup CMSIS_RTOS
 @brief Exchange messages between threads in a FIFO-like operation.
-@details 
+@details
 \b Message \b passing is another basic communication model between threads. In the message passing model, one thread sends
 data explicitly, while another thread receives it. The operation is more like some kind of I/O rather than a direct access to
 information to be shared. In CMSIS-RTOS, this mechanism is called s \b message \b queue. The data is passed from one thread
@@ -31,20 +31,20 @@ Returned by:
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \struct osMessageQueueAttr_t
 \details
 Specifies the following attributes for the \ref osMessageQueueNew function.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osMessageQueueId_t osMessageQueueNew (uint32_t msg_count, uint32_t msg_size, const osMessageQueueAttr_t *attr)
 \details
 The function \ref osMessageQueueNew creates and initializes a  message queue object.
-The function returns a message queue object identifier or \token{NULL} in case of an error. 
+The function returns a message queue object identifier or \token{NULL} in case of an error.
 
-The function can be called after kernel initialization with \ref osKernelInitialize. It is possible to 
+The function can be called after kernel initialization with \ref osKernelInitialize. It is possible to
 create message queue objects before the RTOS kernel is started with \ref osKernelStart.
 
 The total amount of memory required for the message queue data is at least <code>msg_count * msg_size</code>.
@@ -70,7 +70,7 @@ mq_id or \token{NULL} in case of an error.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osMessageQueuePut (osMessageQueueId_t mq_id, const void *msg_ptr, uint8_t msg_prio, uint32_t timeout)
 \details
 The blocking function \b osMessageQueuePut puts the message pointed to by \a msg_ptr into the the message queue specified
@@ -96,33 +96,33 @@ Possible \ref osStatus_t return values:
 <b>Code Example:</b>
 \code
 #include "cmsis_os2.h"                          // CMSIS RTOS header file
- 
+
 /*----------------------------------------------------------------------------
  *      Message Queue creation & usage
  *---------------------------------------------------------------------------*/
- 
+
 #define MSGQUEUE_OBJECTS 16                     // number of Message Queue Objects
- 
+
 typedef struct {                                // object data type
   uint8_t Buf[32];
   uint8_t Idx;
 } MSGQUEUE_OBJ_t;
- 
+
 osMessageQueueId_t mid_MsgQueue;                // message queue id
- 
+
 osThreadId_t tid_Thread_MsgQueue1;              // thread id 1
 osThreadId_t tid_Thread_MsgQueue2;              // thread id 2
- 
+
 void Thread_MsgQueue1 (void *argument);         // thread function 1
 void Thread_MsgQueue2 (void *argument);         // thread function 2
- 
+
 int Init_MsgQueue (void) {
- 
+
   mid_MsgQueue = osMessageQueueNew(MSGQUEUE_OBJECTS, sizeof(MSGQUEUE_OBJ_t), NULL);
   if (mid_MsgQueue == NULL) {
     ; // Message Queue object not created, handle failure
   }
- 
+
   tid_Thread_MsgQueue1 = osThreadNew(Thread_MsgQueue1, NULL, NULL);
   if (tid_Thread_MsgQueue1 == NULL) {
     return(-1);
@@ -131,13 +131,13 @@ int Init_MsgQueue (void) {
   if (tid_Thread_MsgQueue2 == NULL) {
     return(-1);
   }
- 
+
   return(0);
 }
- 
+
 void Thread_MsgQueue1 (void *argument) {
   MSGQUEUE_OBJ_t msg;
- 
+
   while (1) {
     ; // Insert thread code here...
     msg.Buf[0] = 0x55U;                                         // do some work...
@@ -146,11 +146,11 @@ void Thread_MsgQueue1 (void *argument) {
     osThreadYield();                                            // suspend thread
   }
 }
- 
+
 void Thread_MsgQueue2 (void *argument) {
   MSGQUEUE_OBJ_t msg;
   osStatus_t status;
- 
+
   while (1) {
     ; // Insert thread code here...
     status = osMessageQueueGet(mid_MsgQueue, &msg, NULL, 0U);   // wait for message
@@ -163,7 +163,7 @@ void Thread_MsgQueue2 (void *argument) {
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osMessageQueueGet (osMessageQueueId_t mq_id, void *msg_ptr, uint8_t *msg_prio, uint32_t timeout)
 \details
 The function \b osMessageQueueGet retrieves a message from the message queue specified by the parameter \a mq_id and saves it
@@ -191,7 +191,7 @@ Refer to \ref osMessageQueuePut
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn uint32_t osMessageQueueGetCapacity (osMessageQueueId_t mq_id)
 \details
 The function \b osMessageQueueGetCapacity returns the maximum number of messages in the message queue object specified by
@@ -201,7 +201,7 @@ parameter \a mq_id or \token{0} in case of an error.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn uint32_t osMessageQueueGetMsgSize (osMessageQueueId_t mq_id)
 \details
 The function \b osMessageQueueGetMsgSize returns the maximum message size in bytes for the message queue object specified by
@@ -211,7 +211,7 @@ parameter \a mq_id or \token{0} in case of an error.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn uint32_t osMessageQueueGetCount (osMessageQueueId_t mq_id)
 \details
 The function \b osMessageQueueGetCount returns the number of queued messages in the message queue object specified by
@@ -221,7 +221,7 @@ parameter \a mq_id or \token{0} in case of an error.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn uint32_t osMessageQueueGetSpace (osMessageQueueId_t mq_id)
 \details
 The function \b osMessageQueueGetSpace returns the number available slots for messages in the message queue object specified
@@ -231,7 +231,7 @@ by parameter \a mq_id or \token{0} in case of an error.
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osMessageQueueReset (osMessageQueueId_t mq_id)
 \details
 The function \b osMessageQueueReset resets the message queue specified by the parameter \a mq_id.
@@ -246,7 +246,7 @@ Possible \ref osStatus_t return values:
 */
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
-/** 
+/**
 \fn osStatus_t osMessageQueueDelete (osMessageQueueId_t mq_id)
 \details
 The function \b osMessageQueueDelete deletes a message queue object specified by parameter \a mq_id. It releases internal
@@ -277,7 +277,7 @@ Default: \token{NULL} to use \ref CMSIS_RTOS_MemoryMgmt_Automatic for the messag
 
 \var osMessageQueueAttr_t::cb_size
 \details
-The size (in bytes) of memory block passed with \ref cb_mem. For RTX, the minimum value is defined with \ref osRtxMessageQueueCbSize (higher values are permitted).
+The size (in bytes) of memory block passed with \ref cb_mem.
 
 Default: \token{0} as the default is no memory provided with \ref cb_mem.
 

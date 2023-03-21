@@ -1,12 +1,12 @@
-// 
+//
 // close group struct osMutexAttr_t
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 //  ==== Mutex Management ====
-/** 
+/**
 \addtogroup CMSIS_RTOS_MutexMgmt Mutex Management
 \ingroup CMSIS_RTOS
 \brief Synchronize resource access using Mutual Exclusion (Mutex).
-\details 
+\details
 <b>Mutual exclusion</b> (widely known as \b Mutex) is used in various operating systems for resource management. Many
 resources in a microcontroller device can be used repeatedly, but only by one thread at a time (for example communication
 channels, memory, and files). Mutexes are used to protect access to a shared resource. A mutex is created and then passed
@@ -25,8 +25,8 @@ can be nested.
 
 \note Mutex management functions cannot be called from \ref CMSIS_RTOS_ISR_Calls "Interrupt Service Routines" (ISR), unlike a
 binary semaphore that can be released from an ISR.
-\note Refer to \ref mutexConfig for RTX5 configuration options.  
-  
+\note Refer to \ref mutexConfig for RTX5 configuration options.
+
 @{
 */
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
@@ -46,16 +46,16 @@ If the maximum amount of recursive locks is depleted mutex acquire might fail.
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
-osMutexId_t mutex_id; 
- 
+
+osMutexId_t mutex_id;
+
 const osMutexAttr_t Thread_Mutex_attr = {
   "myThreadMutex",     // human readable mutex name
   osMutexRecursive,    // attr_bits
-  NULL,                // memory for control block   
+  NULL,                // memory for control block
   0U                   // size for control block
 };
- 
+
 // must be called from a thread context
 void UseMutexRecursively(int count) {
   osStatus_t result = osMutexAcquire(mutex_id, osWaitForever);  // lock count is incremented, might fail when lock count is depleted
@@ -89,16 +89,16 @@ This example reveals a blocked high priority thread if \ref osMutexPrioInherit i
 
 \code
 #include "cmsis_os2.h"
- 
-osMutexId_t mutex_id;  
- 
+
+osMutexId_t mutex_id;
+
 const osMutexAttr_t Thread_Mutex_attr = {
   "myThreadMutex",     // human readable mutex name
   osMutexPrioInherit,  // attr_bits
-  NULL,                // memory for control block   
+  NULL,                // memory for control block
   0U                   // size for control block
 };
- 
+
 void HighPrioThread(void *argument) {
   osDelay(1000U); // wait 1s until start actual work
   while(1) {
@@ -107,14 +107,14 @@ void HighPrioThread(void *argument) {
     osMutexRelease(mutex_id);
   }
 }
- 
+
 void MidPrioThread(void *argument) {
   osDelay(1000U); // wait 1s until start actual work
   while(1) {
     // do non blocking stuff
   }
 }
- 
+
 void LowPrioThread(void *argument) {
   while(1) {
     osMutexAcquire(mutex_id, osWaitForever);
@@ -164,16 +164,16 @@ This example reveals a blocked mutex if osMutexRobust is removed.
 
 \code
 #include "cmsis_os2.h"
- 
+
 osMutexId_t mutex_id;
- 
+
 const osMutexAttr_t Thread_Mutex_attr = {
   "myThreadMutex",     // human readable mutex name
   osMutexRobust,       // attr_bits
-  NULL,                // memory for control block   
+  NULL,                // memory for control block
   0U                   // size for control block
 };
- 
+
 void Thread(void *argument) {
   osMutexAcquire(mutex_id, osWaitForever);
   osThreadExit();
@@ -189,7 +189,7 @@ Due to \ref osMutexRobust the mutex gets released automatically. A non-robust mu
 \details
 Returned by:
 - \ref osMutexNew
-*/ 
+*/
 
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 /**
@@ -214,16 +214,16 @@ to \token{NULL}.
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
-osMutexId_t mutex_id;  
- 
+
+osMutexId_t mutex_id;
+
 const osMutexAttr_t Thread_Mutex_attr = {
   "myThreadMutex",                          // human readable mutex name
   osMutexRecursive | osMutexPrioInherit,    // attr_bits
-  NULL,                                     // memory for control block   
+  NULL,                                     // memory for control block
   0U                                        // size for control block
 };
- 
+
 void CreateMutex (void)  {
   mutex_id = osMutexNew(&Thread_Mutex_attr);
   if (mutex_id != NULL)  {
@@ -249,7 +249,7 @@ The function \b osMutexGetName returns the pointer to the name string of the mut
 \fn osStatus_t osMutexAcquire (osMutexId_t mutex_id, uint32_t timeout)
 \details
 The blocking function \b osMutexAcquire waits until a mutex object specified by parameter \a mutex_id becomes available. If
-no other thread has obtained the mutex, the function instantly returns and blocks the mutex object. 
+no other thread has obtained the mutex, the function instantly returns and blocks the mutex object.
 
 The parameter \a timeout specifies how long the system waits to acquire the mutex. While the system waits, the thread that is
 calling this function is put into the \ref ThreadStates "BLOCKED" state. The parameter \ref CMSIS_RTOS_TimeOutValue "timeout"
@@ -270,11 +270,11 @@ Possible \ref osStatus_t return values:
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 void WaitMutex (void) {
   osMutexId_t mutex_id;
   osStatus_t  status;
- 
+
   mutex_id = osMutexNew(NULL);
   if (mutex_id != NULL) {
     status = osMutexAcquire(mutex_id, 0U);
@@ -304,12 +304,12 @@ Possible \ref osStatus_t return values:
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 osMutexId_t mutex_id;                                        // Mutex id populated by the function osMutexNew()
- 
+
 void ReleaseMutex (osMutexId_t mutex_id) {
   osStatus_t status;
- 
+
   if (mutex_id != NULL)  {
     status = osMutexRelease(mutex_id);
     if (status != osOK)  {
@@ -349,12 +349,12 @@ Possible \ref osStatus_t return values:
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"
- 
+
 osMutexId_t mutex_id;                           // Mutex id populated by the function osMutexNew()
- 
+
 void DeleteMutex (osMutexId_t mutex_id)  {
   osStatus_t status;
- 
+
   if (mutex_id != NULL)  {
     status = osMutexDelete(mutex_id);
     if (status != osOK)  {
@@ -396,7 +396,7 @@ Default: \token{NULL} to use \ref CMSIS_RTOS_MemoryMgmt_Automatic for the mutex 
 /**
 \var osMutexAttr_t::cb_size
 \details
-The size (in bytes) of memory block passed with \ref cb_mem. For RTX, the minimum value is defined with \ref osRtxMutexCbSize (higher values are permitted).
+The size (in bytes) of memory block passed with \ref cb_mem.
 
 Default: \token{0} as the default is no memory provided with \ref cb_mem.
 */

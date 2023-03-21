@@ -1,10 +1,10 @@
 /*=======0=========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1====*/
 //  ==== Semaphore Management ====
-/** 
+/**
 \addtogroup CMSIS_RTOS_SemaphoreMgmt Semaphores
 \ingroup CMSIS_RTOS
 \brief Access shared resources simultaneously from different threads.
-\details 
+\details
 Semaphores are used to manage and protect access to shared resources. Semaphores are very similar to
 \ref CMSIS_RTOS_MutexMgmt "Mutexes". Whereas a Mutex permits just one thread to access a shared resource at a
 time, a semaphore can be used to permit a fixed number of threads/ISRs to access a pool of shared resources. Using
@@ -45,9 +45,9 @@ threads that might access the resource:
 
 \code
 osSemaphoreId_t multiplex_id;
- 
+
 void thread_n (void) {
- 
+
   multiplex_id = osSemaphoreNew(3U, 3U, NULL);
   while(1) {
     osSemaphoreAcquire(multiplex_id, osWaitForever);
@@ -73,10 +73,10 @@ producer and/or consumer threads running concurrently.
 
 \code
 #define BUFFER_SIZE 10U
- 
+
 osSemaphoreId_t empty_id = osSemaphoreNew(BUFFER_SIZE, BUFFER_SIZE, NULL);
 osSemaphoreId_t filled_id = osSemaphoreNew(BUFFER_SIZE, 0U, NULL);
- 
+
 void producer_thread (void) {
   while(1) {
     osSemaphoreAcquire(empty_id, osWaitForever);
@@ -86,7 +86,7 @@ void producer_thread (void) {
 }
 
 void consumer_thread (void) {
- 
+
   while(1){
     osSemaphoreAcquire(filled_id, osWaitForever);
     // consume data
@@ -132,34 +132,34 @@ The parameter \em attr specifies additional semaphore attributes. Default attrib
 <b>Code Example</b>
 \code
 #include "cmsis_os2.h"                          // CMSIS RTOS header file
- 
+
 osSemaphoreId_t sid_Semaphore;                  // semaphore id
- 
+
 osThreadId_t tid_Thread_Semaphore;              // thread id
- 
+
 void Thread_Semaphore (void *argument);         // thread function
- 
+
 int Init_Semaphore (void) {
- 
+
   sid_Semaphore = osSemaphoreNew(2U, 2U, NULL);
   if (sid_Semaphore == NULL) {
     ; // Semaphore object not created, handle failure
   }
- 
+
   tid_Thread_Semaphore = osThreadNew(Thread_Semaphore, NULL, NULL);
   if (tid_Thread_Semaphore == NULL) {
     return(-1);
   }
- 
+
   return(0);
 }
- 
+
 void Thread_Semaphore (void *argument) {
   osStatus_t val;
- 
+
   while (1) {
     ; // Insert thread code here...
- 
+
     val = osSemaphoreAcquire(sid_Semaphore, 10U);       // wait for max. 10 ticks for semaphore token to get available
     switch (val) {
       case osOK:
@@ -173,7 +173,7 @@ void Thread_Semaphore (void *argument) {
       default:
         break;
     }
- 
+
     osThreadYield();                                    // suspend thread
   }
 }
@@ -195,7 +195,7 @@ semaphore_id or \token{NULL} in case of an error.
 \fn osStatus_t osSemaphoreAcquire (osSemaphoreId_t semaphore_id, uint32_t timeout)
 \details
 The blocking function \b osSemaphoreAcquire waits until a token of the semaphore object specified by parameter
-\a semaphore_id becomes available. If a token is available, the function instantly returns and decrements the token count. 
+\a semaphore_id becomes available. If a token is available, the function instantly returns and decrements the token count.
 
 The parameter \a timeout specifies how long the system waits to acquire the token. While the system waits, the thread
 that is calling this function is put into the \ref ThreadStates "BLOCKED" state. The parameter \ref CMSIS_RTOS_TimeOutValue
@@ -213,7 +213,7 @@ Possible \ref osStatus_t return values:
 
 \note May be called from \ref CMSIS_RTOS_ISR_Calls "Interrupt Service Routines" if the parameter \a timeout is set to
 \token{0}.
- 
+
 <b>Code Example</b>
 
 Refer to \ref osSemaphoreNew.
@@ -281,7 +281,7 @@ Default: \token{NULL} to use \ref CMSIS_RTOS_MemoryMgmt_Automatic for the semaph
 
 \var osSemaphoreAttr_t::cb_size
 \details
-The size (in bytes) of memory block passed with \ref cb_mem. For RTX, the minimum value is defined with \ref osRtxSemaphoreCbSize (higher values are permitted).
+The size (in bytes) of memory block passed with \ref cb_mem.
 
 Default: \token{0} as the default is no memory provided with \ref cb_mem.
 

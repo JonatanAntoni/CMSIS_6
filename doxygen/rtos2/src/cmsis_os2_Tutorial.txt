@@ -6,7 +6,7 @@ This tutorial is an introduction to using a small footprint real-time operating 
 If you are used to writing procedural-based 'C' code on small 8-/16-bit microcontrollers, you may be doubtful about the need
 for such an operating system. If you are not familiar with using an RTOS in real-time embedded systems, you should read this
 chapter before dismissing the idea. The use of an RTOS represents a more sophisticated design approach, inherently fostering
-structured code development which is enforced by the RTOS application programming interface (API). 
+structured code development which is enforced by the RTOS application programming interface (API).
 
 The RTOS structure allows you to take a more object-orientated design approach, while still programming in 'C'. The RTOS
 also provides you with multithreaded support on a small microcontroller. These two features actually create quite a shift in
@@ -70,15 +70,15 @@ procedure but has some very fundamental differences.
 \code
 unsigned int procedure (void) {
   ...
-	return(ch);      		
+	return(ch);
 }
- 
+
 void thread (void) {
   while(1) {
     ...
 	}
-}	
- 
+}
+
 __NO_RETURN void Thread1(void*argument) {
   while(1) {
     ...
@@ -94,7 +94,7 @@ An RTOS program is made up of a number of threads, which are controlled by the R
 SysTick timer to generate a periodic interrupt as a time base. The scheduler will allot a certain amount of execution time
 to each thread. So \c thread1 will run for 5 ms then be de-scheduled to allow \c thread2 to run for a similar period;
 \c thread2 will give way to \c thread3 and finally control passes back to \c thread1. By allocating these slices of runtime
-to each thread in a round-robin fashion, we get the appearance of all three threads running in parallel to each other. 
+to each thread in a round-robin fashion, we get the appearance of all three threads running in parallel to each other.
 
 Conceptually we can think of each thread as performing a specific functional unit of our program with all threads running
 simultaneously. This leads us to a more object-orientated design, where each functional block can be coded and tested in
@@ -134,9 +134,9 @@ scheduled by the kernel.
 To build a simple RTOS, program we declare each thread as a standard 'C' function and also declare a thread ID variable for
 each function.
 \code
-void thread1 (void);	
+void thread1 (void);
 void thread2 (void);
- 
+
 osThreadId thrdID1, thrdID2;
 \endcode
 Once the processor leaves the reset vector, we will enter the \c main() function as normal. Once in \c main(), we must call
@@ -155,7 +155,7 @@ void app_main(void *argument) {
   while (1)
     ;
 }
- 
+
 void main(void) {
   IODIR1 = 0x00FF0000;               // Do any C code you want
   osKernelInitialize();              // Initialize the kernel
@@ -188,7 +188,7 @@ As we saw in the first example, the \c app_main() thread is used as a launcher t
 This is done in two stages. First a thread structure is defined; this allows us to define the thread operating parameters.
 \code
 osThreadId thread1_id; // thread handle
- 
+
 static const osThreadAttr_t threadAttr_thread1 = {
 	“Name_String ",	     //Human readable Name for debugger
     Attribute_bits Control_Block_Memory,
@@ -214,7 +214,7 @@ thread1_id = osThreadNew(name_Of_C_Function, (uint32_t)startupParameter,&threadA
 \endcode
 
 
-\subsection rtos2_tutorial_ex2 Exercise 2 - Creating and Managing Threads 
+\subsection rtos2_tutorial_ex2 Exercise 2 - Creating and Managing Threads
 
 Open <a href="https://www2.keil.com/mdk5/packinstaller" target="_blank">Pack Installer</a>:
 - Use the <b>Search</b> box on the <b>Boards</b> tab to look for the <b>CMSIS_RTOS_Tutorial (V2.1)</b> "board".
@@ -243,7 +243,7 @@ As well as creating threads, it is also possible for a thread to delete another 
 the thread ID rather than the function name of the thread.
 \code
 osStatus = osThreadTerminate (threadID1);
-\endcode		
+\endcode
 If a thread wants to terminate itself then there is a dedicated exit function.
 \code
 osThreadExit (void)
@@ -265,22 +265,22 @@ thread if the stack size value in the thread definition structure is set to zero
 additional memory resources by defining a bigger stack size in the thread structure. Keil RTX5 supports several memory
 models to assign this thread memory. The default model is a global memory pool. In this model each RTOS object that is
 created (threads, message queues, semaphores etc.) are allocated memory from a single block of memory.
- 
+
 If an object is destroyed the memory it has been assigned is returned to the memory pool. This has the advantage of memory
 reuse but also introduces the possible problem of memory fragmentation.
 
 The size of the global memory pool is defined in the configuration file:
 \code
 #define OS_DYNAMIC_MEM_SIZE         4096
-\endcode 	
+\endcode
 And the default stack size for each thread is defined in the threads section:
 \code
 #define OS_STACK_SIZE               256
-\endcode 
+\endcode
 It is also possible to define object specific memory pools for each different type of RTOS object. In this model you define
 the maximum number of a specific object type and its memory requirements. The RTOS then calculates and reserves the required
 memory usage.
- 
+
 The object specific model is again defined in the RTOS configuration file by enabling the "object specific memory" option
 provided in each section of the configuration file:
 \code
@@ -294,7 +294,7 @@ object type. In the case of more complex objects such as threads we will need to
 #define OS_THREAD_NUM               1
 #define OS_THREAD_DEF_STACK_NUM     0
 #define OS_THREAD_USER_STACK_SIZE   1024
-\endcode 
+\endcode
 To use the object specific memory allocation model with threads we must provide details of the overall thread memory usage.
 Finally it is possible to statically allocate the thread stack memory. This is important for safety related systems where
 memory usage has to be rigorously defined.
@@ -319,7 +319,7 @@ to different thread handles. A parameter is also passed to allow each instance t
 \code
 #define UART1 (void *) 1UL
 #define UART2 (void *) 2UL
- 
+
 ThreadID_1_0 = osThreadNew (thread1, UART1, &ThreadAttr_Task1);
 ThreadID_1_1 = osThreadNew (thread1, UART0, &ThreadAttr_Task1);
 \endcode
@@ -368,7 +368,7 @@ Open <a href="https://www2.keil.com/mdk5/packinstaller" target="_blank">Pack Ins
 \section rtos2_tutorial_time_mgmt Time Management
 
 As well as running your application code as threads, the RTOS also provides some timing services which can be accessed
-through RTOS system calls. 
+through RTOS system calls.
 
 
 \subsection rtos2_tutorial_time_delay Time Delay
@@ -381,8 +381,8 @@ than it immediately appears.
 void osDelay (uint32_t ticks)
 \endcode
 This call will place the calling thread into the WAIT_DELAY state for the specified number of milliseconds. The scheduler
-will pass execution to the next thread in the READY state. 
- 
+will pass execution to the next thread in the READY state.
+
 When the timer expires, the thread will leave the WAIT_DELAY  state and move to the READY state. The thread will resume
 running when the scheduler moves it to the RUNNING state. If the thread then continues executing without any further
 blocking OS calls, it will be descheduled at the end of its time slice and be placed in the ready state, assuming another
@@ -394,7 +394,7 @@ thread of the same priority is ready to run.
 In addition to the \ref osDelay() function which gives a relative time delay starting from the instant it is called, there
 is also a delay function which halts a thread until a specific point in time:
 \code
-osStatus osDelayUntil (uint32_t ticks)	 
+osStatus osDelayUntil (uint32_t ticks)
 \endcode
 The \ref osDelayUntil() function will halt a thread until a specific value of kernel timer ticks is reached. There are a
 number of kernel functions that allow you to read both the current SysTick count and the kernel ticks count.
@@ -459,19 +459,19 @@ The final timer service provided by the RTOS isn't really a timer, but this is p
 during our RTOS program we have no thread running and no thread ready to run (e.g. they are all waiting on delay functions),
 then the RTOS will start to run the Idle Thread. This thread is automatically created when the RTOS starts and runs at the
 lowest priority. The Idle Thread function is located in the RTX_Config.c file:
-\code 
+\code
 __WEAK __NO_RETURN void osRtxIdleThread (void *argument) {
   (void)argument;
- 
+
   for (;;) {}
 }
 \endcode
 You can add any code to this thread, but it has to obey the same rules as user threads. The simplest use of the idle demon
 is to place the microcontroller into a low-power mode when it is not doing anything.
-\code 
+\code
 __WEAK __NO_RETURN void osRtxIdleThread (void *argument) {
   (void)argument;
- 
+
   for (;;) {
     __WFE();
   }
@@ -545,7 +545,7 @@ Open <a href="https://www2.keil.com/mdk5/packinstaller" target="_blank">Pack Ins
 
 Event flags operate in a similar fashion to thread flags but must be created and then act as a global RTOS object that can
 be used by all the running threads.
- 
+
 First, we need to create a set of event flags, this is a similar process to creating a thread. We define an event flag
 attribute structure. The attribute structure defines an ASCII name string, attribute bits, and memory detention. If we are
 using the static memory model.
@@ -591,7 +591,7 @@ initialized with an initial token count. In this case the semaphore is initializ
 run and reach a point in their code where they will attempt to acquire a token from the semaphore. The first thread to reach
 this point will acquire the token from the semaphore and continue execution. The second thread will also attempt to acquire
 a token, but as the semaphore is empty it will halt execution and be placed into a waiting state until a semaphore token is
-available. 
+available.
 
 Meanwhile, the executing thread can release a token back to the semaphore. When this happens, the waiting thread will
 acquire the token and leave the waiting state for the ready state. Once in the ready state the scheduler will place the
@@ -649,7 +649,7 @@ osSemaphoreId_t sem1;
 static const osSemaphoreAttr_t semAttr_SEM1 = {
     .name = "SEM1",
 };
- 
+
 void thread1(void) {
   sem1 = osSemaphoreNew(5, 0, &semAttr_SEM1);
   while (1) {
@@ -657,7 +657,7 @@ void thread1(void) {
     osSemaphoreRelease(sem1)
   }
 }
- 
+
 void task2(void) {
 
   while (1) {
@@ -686,7 +686,7 @@ osSemaphoreId_t multiplex;
 static const osSemaphoreAttr_t semAttr_Multiplex = {
     .name = "SEM1",
 };
- 
+
 void thread1(void) {
   multiplex = osSemaphoreCreate(5, 5, &semAttr_Multiplex);
   while (1) {
@@ -721,11 +721,11 @@ osSemaphoreId_t arrived1, arrived2;
 static const osSemaphoreAttr_t semAttr_Arrived1 = {
     .name = "Arr1",
 };
- 
+
 static const osSemaphoreAttr_t semAttr_Arrived2 = {
     .name = "Arr2",
 };
- 
+
 void thread1(void) {
   arrived1 = osSemaphoreNew(2, 0);
   arrived1 = osSemaphoreNew(2, 0);
@@ -736,7 +736,7 @@ void thread1(void) {
     FuncA2();
   }
 }
- 
+
 void thread2(void) {
   while (1) {
     FuncB1();
@@ -767,13 +767,13 @@ osSemaphoreId_t count, barrier;
 static const osSemaphoreAttr_t semAttr_Counter = {
     .name = "Counter",
 };
- 
+
 static const osSemaphoreAttr_t semAttr_Barier = {
     .name = "Barrier",
 };
- 
+
 unsigned int count;
- 
+
 void thread1(void) {
   Turnstile_In = osSemaphoreNew(5, 0, &semAttr_SEM_In);
   Turnstile_Out = osSemaphoreNew(5, 1, &semAttr_SEM_Out);
@@ -798,7 +798,7 @@ In this code, we use a global variable to count the number of threads which have
 arrives at the barrier it will wait until it can acquire a token from the counter semaphore. Once acquired, the count
 variable will be incremented by one. Once we have incremented the count variable, a token is sent to the counter semaphore
 so that other waiting threads can proceed. Next, the barrier code reads the count variable. If this is equal to the number
-of threads which are waiting to arrive at the barrier, we send a token to the barrier semaphore. 
+of threads which are waiting to arrive at the barrier, we send a token to the barrier semaphore.
 
 In the example above we are synchronising five threads. The first four threads will increment the count variable and then
 wait at the barrier semaphore. The fifth and last thread to arrive will increment the count variable and send a token to the
@@ -838,7 +838,7 @@ binary and bounded. Apart from this it really works in the same way as a semapho
 container and initialize the mutex:
 \code
 osMutexId_t uart_mutex;
- 
+
 osMutexAttr_t {
   const char *name;   ///< name of the mutex
   uint32_t attr_bits; ///< attribute bits
@@ -894,7 +894,7 @@ So far, all of the inter-thread communication methods have only been used to tri
 upport the exchange of program data between threads. Clearly, in a real program we will need to move data between threads.
 This could be done by reading and writing to globally declared variables. In anything but a very simple program, trying to
 guarantee data integrity would be extremely difficult and prone to unforeseen errors. The exchange of data between threads
-needs a more formal asynchronous method of communication. 
+needs a more formal asynchronous method of communication.
 
 CMSIS-RTOS provides two methods of data transfer between threads. The first method is a message queue which creates a
 buffered data 'pipe' between two threads. The message queue is designed to transfer integer values.
@@ -915,7 +915,7 @@ to isolate for testing and code reuse.
 To setup a message queue we first need to allocate the memory resources:
 \code
 osMessageQId_t Q_LED;
- 
+
 osMessageQueueAttr_t {
   const char *name;   ///< name of the message queue
   uint32_t attr_bits; ///< attribute bits
@@ -962,7 +962,7 @@ typedef struct {
 \endcode
 Then we can define a message queue which is formatted to receive this type of message:
 \code
-Q_LED = osMessageQueueNew(16,sizeof(message_t),&queueAttr_Q_LED );	
+Q_LED = osMessageQueueNew(16,sizeof(message_t),&queueAttr_Q_LED );
 \endcode
 
 
@@ -1095,10 +1095,10 @@ For object specific memory allocation, we must define the maximum number of user
 or timer threads) which will be running. We must also define the number of threads which have a default stack size and also
 the total amount of memory required by threads with custom tack sizes. Once we have defined the memory used by user threads,
 we can allocate memory to the idle thread. During development, CMSIS-RTOS can trap stack overflows. When this option is
-enabled, an overflow of a thread stack space will cause the RTOS kernel to call the \ref osRtxErrorNotify() function which
+enabled, an overflow of a thread stack space will cause the RTOS kernel to call the osRtxErrorNotify() function which
 is located in the RTX_Config.c file. This function gets an error code and then sits in an infinite loop. The stack checking
 option is intended for use during debugging and should be disabled on the final application to minimize the kernel overhead.
-However, it is possible to modify the \ref osRtxErrorNotify() function if enhanced error protection is required in the final
+However, it is possible to modify the osRtxErrorNotify() function if enhanced error protection is required in the final
 release.
 \code
 // OS Error Callback function
@@ -1132,7 +1132,7 @@ __WEAK uint32_t osRtxErrorNotify (uint32_t code, void *object_id) {
 It is also possible to monitor the maximum stack memory usage during run time. If you check the "Stack Usage Watermark"
 option, a pattern (0xCC) is written into each stack space. During runtime, this watermark is used to calculate the maximum
 memory usage. In Arm Keil MDK, this figure is reported in the threads section of the View - Watch Window - RTX RTOS window.
- 
+
 This section also allows us to select whether the threads are running in privileged or unprivileged mode. The last option
 allows us to define the processor operating mode for the user threads. If you want an easy life, leave this set to
 "privileged mode" and you will have full access to all the processor features. However, if you are writing a safety critical
@@ -1150,5 +1150,5 @@ kernel timer functions as outlined explained in the \ref CMSIS_RTOS_TickAPI docu
 \section rtos2_tutorial_conclusion Conclusion
 
 In this tutorial, we have worked our way through the CMSIS-RTOS2 API and introduced some of the key concepts associated with
-using an RTOS. The only real way to learn how to develop with an RTOS is to actually use one in a real project. 
+using an RTOS. The only real way to learn how to develop with an RTOS is to actually use one in a real project.
 */
