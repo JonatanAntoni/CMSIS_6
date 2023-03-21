@@ -7,3 +7,6 @@ doxygen/**/*.dxy
 *.uvguix.*
 *.uvmpw.uvgui.*
 *.zip
+*.bak
+*.old
+.clangd

@@ -5,7 +5,7 @@
 #
 # Pre-requisites:
 # - bash shell (for Windows: install git for Windows)
-# - doxygen 1.8.6
+# - doxygen 1.9.2
 # - mscgen 0.20
 
 set -o pipefail
@@ -14,7 +14,7 @@ set -o pipefail
 REQUIRED_GEN_PACK_LIB="0.7.0"
 
 DIRNAME=$(dirname $(readlink -f $0))
-REQ_DXY_VERSION="1.8.6"
+REQ_DXY_VERSION="1.9.2"
 REQ_MSCGEN_VERSION="0.20"
 
 ############ DO NOT EDIT BELOW ###########
@@ -53,7 +53,7 @@ find_git
 find_doxygen "${REQ_DXY_VERSION}"
 find_utility "mscgen" "-l | grep 'Mscgen version' | sed -r -e 's/Mscgen version ([^,]+),.*/\1/'" "${REQ_MSCGEN_VERSION}"
 
-if [ -z "${VERSION}" ]; then
+if [ -z "${VERSION_FULL}" ]; then
   VERSION_FULL=$(git_describe "v")
 fi
 
@@ -66,7 +66,7 @@ function generate() {
 
   projectName=$(grep -E "PROJECT_NAME\s+=" $1.dxy.in | sed -r -e 's/[^"]*"([^"]+)".*/\1/')
   projectNumberFull="$2"
-  projectNumber="${projectNumber%+*}"
+  projectNumber="${projectNumberFull%+*}"
   datetime=$(date -u +'%a %b %e %Y %H:%M:%S')
   year=$(date -u +'%Y')
 
@@ -91,10 +91,10 @@ function generate() {
 }
 
 generate "general" "${VERSION_FULL}"
-generate "core_a"  "${VERSION}"
-generate "core_m"  "${VERSION}"
-generate "driver"  "${VERSION}"
-generate "rtos2"    "${VERSION}"
+generate "core_a"  "${VERSION_FULL}"
+generate "core_m"  "${VERSION_FULL}"
+generate "driver"  "${VERSION_FULL}"
+generate "rtos2"    "${VERSION_FULL}"
 
 popd > /dev/null
 

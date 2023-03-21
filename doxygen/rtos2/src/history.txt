@@ -54,33 +54,33 @@
     <tr>
       <td>V1.02 - only documentation changes</td>
       <td>
-      Added: Overview of the \ref rtosValidation "CMSIS-RTOS Validation" Software Pack.\n
+      Added: Overview of the \ref rtosValidation "CMSIS-RTOS Validation" Software Pack.<br>
       Clarified: Behavior of \ref CMSIS_RTOS_TimeOutValue.
      </td>
     </tr>
     <tr>
       <td>V1.02</td>
       <td>Added: New control functions for short timeouts in microsecond resolution \b osKernelSysTick,
-      \b osKernelSysTickFrequency, \b osKernelSysTickMicroSec.\n
+      \b osKernelSysTickFrequency, \b osKernelSysTickMicroSec.<br>
       Removed: osSignalGet.
      </td>
     </tr>fv
     <tr>
       <td>V1.01</td>
-      <td>Added capabilities for C++, kernel initialization and object deletion.\n
+      <td>Added capabilities for C++, kernel initialization and object deletion.<br>
       Prepared for C++ class interface. In this context to \em const attribute has been moved from osXxxxDef_t typedefs to
-      the osXxxxDef macros.\n
-      Added: \ref osTimerDelete, \ref osMutexDelete, \ref osSemaphoreDelete.\n
-      Added: \ref osKernelInitialize that prepares the kernel for object creation.\n
+      the osXxxxDef macros.<br>
+      Added: \ref osTimerDelete, \ref osMutexDelete, \ref osSemaphoreDelete.<br>
+      Added: \ref osKernelInitialize that prepares the kernel for object creation.<br>
       </td>
     </tr>
     <tr>
       <td>
       V1.00</td>
-      <td>First official Release.\n
-      Added: \ref osKernelStart; starting 'main' as a thread is now an optional feature.\n
-      Semaphores have now the standard behavior.\n
-      \b osTimerCreate does no longer start the timer. Added: \ref osTimerStart (replaces osTimerRestart).\n
+      <td>First official Release.<br>
+      Added: \ref osKernelStart; starting 'main' as a thread is now an optional feature.<br>
+      Semaphores have now the standard behavior.<br>
+      \b osTimerCreate does no longer start the timer. Added: \ref osTimerStart (replaces osTimerRestart).<br>
       Changed: osThreadPass is renamed to \ref osThreadYield.
       </td>
     </tr>
