@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import logging
@@ -86,11 +86,10 @@ class CompilerAxis(Enum):
 
 @matrix_axis("optimize", "o", "Optimization level(s) to be considered.")
 class OptimizationAxis(Enum):
-    LOW = ('low', 'O1')
-    MID = ('mid', 'O2')
-    HIGH = ('high', 'Ofast')
-    SIZE = ('size', 'Os')
-    TINY = ('tiny', 'Oz')
+    NONE = ('none')
+    BALANCED = ('balanced')
+    SPEED = ('speed')
+    SIZE = ('size')
 
 
 MODEL_EXECUTABLE = {
@@ -139,15 +138,19 @@ def bl_project_name(config):
 
 
 def output_dir(config):
-    return "outdir"
+    return f"out/validation/{config.optimize}/{config.device[1]}"
 
 
 def bl_output_dir(config):
-    return "outdir"
+    return f"out/bootloader/{config.optimize}/{config.device[1]}"
 
 
 def model_config(config):
-    return f"../Layer/Target/{config.device[1]}/model_config.txt"
+    return f"../layer/target/{config.device[1]}/model_config.txt"
+
+
+def build_dir(config):
+    return f"build/{config.device[1]}/{config.compiler}/{config.optimize}"
 
 
 @matrix_action
@@ -160,28 +163,22 @@ def clean(config):
 def build(config, results):
     """Build the selected configurations using CMSIS-Build."""
 
-    if config.device.has_bl():
-        logging.info("Compiling Bootloader...")
-        yield csolution(f"{bl_project_name(config)}")
-        yield cbuild(f"{bl_project_name(config)}/{bl_project_name(config)}.cprj")
-
     logging.info("Compiling Tests...")
 
-    if config.compiler == CompilerAxis.GCC and  config.device.match("CA*"):
+    if config.compiler == CompilerAxis.GCC and config.device.match("CA*"):
         ldfile = Path(f"{project_name(config)}/RTE/Device/ARM{config.device[1]}/ARM{config.device[1]}.ld")
         infile = ldfile.replace(ldfile.with_suffix('.ld.in'))
         yield preprocess(infile, ldfile)
 
-    yield csolution(f"{project_name(config)}")
-    yield cbuild(f"{project_name(config)}/{project_name(config)}.cprj")
+    yield cbuild(config)
 
     if not all(r.success for r in results):
         return
 
-    file = f"Core_Validation-{config_suffix(config)}.zip"
+    file = f"build/CoreValidation-{config_suffix(config)}.zip"
     logging.info(f"Archiving build output to {file}...")
     with ZipFile(file, "w") as archive:
-        for content in iglob(f"{project_name(config)}/**/*", recursive=True):
+        for content in iglob(f"{build_dir(config)}/**/*", recursive=True):
             if Path(content).is_file():
                 archive.write(content)
 
@@ -189,7 +186,7 @@ def build(config, results):
 @matrix_action
 def extract(config):
     """Extract the latest build archive."""
-    archives = sorted(glob(f"RTOS2_Validation-{config_suffix(config, timestamp=False)}-*.zip"), reverse=True)
+    archives = sorted(glob(f"build/CoreValidation-{config_suffix(config, timestamp=False)}-*.zip"), reverse=True)
     yield unzip(archives[0])
 
 
@@ -200,7 +197,7 @@ def run(config, results):
     yield model_exec(config)
 
     try:
-        results[0].test_report.write(f"Core_Validation-{config_suffix(config)}.junit")
+        results[0].test_report.write(f"build/CoreValidation-{config_suffix(config)}.junit")
     except RuntimeError as e:
         if isinstance(e.__cause__, XMLSyntaxError):
             logging.error("No valid test report found in model output!")
@@ -222,13 +219,10 @@ def unzip(archive):
 def preprocess(infile, outfile):
     return ["arm-none-eabi-gcc", "-xc", "-E", infile, "-P", "-o", outfile]
 
-@matrix_command()
-def csolution(project):
-    return ["csolution", "convert", "-s", "Validation.csolution.yml", "-c", project]
 
 @matrix_command()
-def cbuild(project):
-    return ["cbuild", project]
+def cbuild(config):
+    return ["cbuild", "--update-rte", "--configuration", f".{config.optimize}+{config.device[1]}", "validation.csolution.yml" ]
 
 
 @matrix_command(test_report=ConsoleReport() |
@@ -241,9 +235,9 @@ def cbuild(project):
 def model_exec(config):
     cmdline = [MODEL_EXECUTABLE[config.device][0], "-q", "--simlimit", 100, "-f", model_config(config)]
     cmdline += MODEL_EXECUTABLE[config.device][1]
-    cmdline += ["-a", f"{project_name(config)}/{output_dir(config)}/{project_name(config)}.{config.compiler.image_ext}"]
+    cmdline += ["-a", f"{build_dir(config)}/validation/{output_dir(config)}/{config.optimize}+{config.device[1]}.{config.compiler.image_ext}"]
     if config.device.has_bl():
-        cmdline += ["-a", f"{bl_project_name(config)}/{bl_output_dir(config)}/{bl_project_name(config)}.{config.compiler.image_ext}"]
+        cmdline += ["-a", f"{build_dir(config)}/bootloader/{bl_output_dir(config)}/{config.optimize}+{config.device[1]}.{config.compiler.image_ext}"]
     return cmdline
 
 

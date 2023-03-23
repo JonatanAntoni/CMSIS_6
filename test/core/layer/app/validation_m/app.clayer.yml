@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.3.0/tools/projmgr/schemas/clayer.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/schemas/projmgr/1.5.0/tools/projmgr/schemas/clayer.schema.json
 
 layer:
   # type: App
@@ -12,8 +12,8 @@ layer:
     - PRINT_XML_REPORT=1
 
   add-paths:
-    - ../../../Include
-    - ../../../Source/Config
+    - ../../../include
+    - ../../../config_m
 
   misc:
     - compiler: AC6
@@ -36,13 +36,13 @@ layer:
 
     - group: CMSIS-Core_Validation
       files:
-        - file: ../../../Source/cmsis_cv.c
-        - file: ../../../Source/CV_CoreFunc.c
-        - file: ../../../Source/CV_CoreInstr.c
-        - file: ../../../Source/CV_CoreSimd.c
-        - file: ../../../Source/CV_CML1Cache.c
-        - file: ../../../Source/CV_MPU_ARMv7.c
-          for-type:
+        - file: ../../../src/cmsis_cv.c
+        - file: ../../../src/CV_CoreFunc.c
+        - file: ../../../src/CV_CoreInstr.c
+        - file: ../../../src/CV_CoreSimd.c
+        - file: ../../../src/CV_CML1Cache.c
+        - file: ../../../src/CV_MPU_ARMv7.c
+          for-context:
             - +CM0
             - +CM0plus
             - +CM3
@@ -51,8 +51,8 @@ layer:
             - +CM7
             - +CM7SP
             - +CM7DP
-        - file: ../../../Source/CV_MPU_ARMv8.c
-          for-type:
+        - file: ../../../src/CV_MPU_ARMv8.c
+          for-context:
             - +CM23
             - +CM23S
             - +CM23NS
@@ -69,5 +69,5 @@ layer:
 
     - group: Validation Framework
       files:
-        - file: ../../../Source/CV_Framework.c
-        - file: ../../../Source/CV_Report.c
+        - file: ../../../src/CV_Framework.c
+        - file: ../../../src/CV_Report.c

@@ -4,8 +4,8 @@ layer:
   # type: Target
   description: Target setup
 
-  # packs:
-  #   - pack: ARM::CMSIS
+  processor:
+    trustzone: non-secure
 
   components:
     # [Cvendor::] Cclass [&Cbundle] :Cgroup [:Csub] [&Cvariant] [@[>=]Cversion]

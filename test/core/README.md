@@ -5,11 +5,11 @@ This folder contains a test suite that validates CMSIS-Core implementations. It 
 ## Folder structure
 
 ```txt
-    📂 CoreValidation
-    ┣ 📂 Include        Include files for test cases etc.
-    ┣ 📂 Layer          Layers for creating the projects.
-    ┣ 📂 Project        Solution and project files to build tests for various configurations.
-    ┗ 📂 Source         Test case source code.
+    📂 test/core
+    ┣ 📂 include        Include files for test cases etc.
+    ┣ 📂 layer          Layers for creating the projects.
+    ┣ 📂 project        Solution and project files to build tests for various configurations.
+    ┗ 📂 src            Test case source code.
 ```
 
 ## Test matrix
@@ -95,7 +95,7 @@ The executables need to be present on the `PATH`.
 Install the Python packages required by `build.py`:
 
 ```bash
-CMSIS_5/CMSIS/CoreValidation/Project $ pip install -r requirements.txt
+test/core/project $ pip install -r requirements.txt
 ```
 
 ## Build and run
@@ -104,13 +104,13 @@ To build and run the CoreValidation tests for one or more configurations use the
 Select the `<compiler>`, `<device>`, and `optimize` level to `build` and `run` for.
 
 ```bash
-CMSIS_5/CMSIS/CoreValidation/Project $ ./build.py -c <compiler> -d <device> -o <optimize> [build] [run]
+test/core/project $ ./build.py -c <compiler> -d <device> -o <optimize> [build] [run]
 ```
 
 For example, build and run the tests using GCC for Cortex-M3 with low optimization, execute:
 
 ```bash
-CMSIS_5/CMSIS/CoreValidation/Project $ ./build.py -c GCC -d CM3 -o low build run
+test/core/project $ ./build.py -c GCC -d CM3 -o low build run
 [GCC][Cortex-M3][low](build:csolution) csolution convert -s Validation.csolution.yml -c Validation.GCC_low+CM3
 [GCC][Cortex-M3][low](build:csolution) csolution succeeded with exit code 0
 [GCC][Cortex-M3][low](build:cbuild) cbuild Validation.GCC_low+CM3/Validation.GCC_low+CM3.cprj

@@ -3,6 +3,9 @@
 
 doc/**/*
 doxygen/**/*.dxy
+output
+test/core/project/build
+test/core/project/RTE/_**
 
 *.uvguix.*
 *.uvmpw.uvgui.*
@@ -10,3 +13,5 @@ doxygen/**/*.dxy
 *.bak
 *.old
 .clangd
+*.base@*
+*.cbuild-idx.yml

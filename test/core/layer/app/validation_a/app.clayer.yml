@@ -12,8 +12,8 @@ layer:
     - PRINT_XML_REPORT=1
 
   add-paths:
-    - ../../../Include
-    - ../../../Source/ConfigA
+    - ../../../include
+    - ../../../config_a
 
   misc:
     - compiler: AC6
@@ -36,13 +36,13 @@ layer:
 
     - group: CMSIS-Core_Validation
       files:
-        - file: ../../../Source/cmsis_cv.c
-        - file: ../../../Source/CV_CoreAFunc.c
-        - file: ../../../Source/CV_CoreInstr.c
-        - file: ../../../Source/CV_CAL1Cache.c
-#        - file: ../../../Source/ConfigA/mmu.c
+        - file: ../../../src/cmsis_cv.c
+        - file: ../../../src/CV_CoreAFunc.c
+        - file: ../../../src/CV_CoreInstr.c
+        - file: ../../../src/CV_CAL1Cache.c
+#        - file: ../../../src/ConfigA/mmu.c
 
     - group: Validation Framework
       files:
-        - file: ../../../Source/CV_Framework.c
-        - file: ../../../Source/CV_Report.c
+        - file: ../../../src/CV_Framework.c
+        - file: ../../../src/CV_Report.c
