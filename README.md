@@ -46,7 +46,6 @@ The following is an list of all CMSIS components that are available.
 | driver               | CMSIS-Driver API headers and template files               |
 | rtos2                | RTOS v2 related files (for Cortex-M & Armv8-M)            |
 | test                 | Validation for Core(M) and Core(A) (NOT part of release)  |
-| utils                | Utility programs                                          |
 
 ## Generate CMSIS Pack for Release
 

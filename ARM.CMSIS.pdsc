@@ -1097,15 +1097,6 @@ and 8-bit Java bytecodes in Jazelle state.
     <condition id="IAR">
       <require Tcompiler="IAR"/>
     </condition>
-    <condition id="ARMCC GCC">
-      <accept Tcompiler="ARMCC"/>
-      <accept Tcompiler="GCC"/>
-    </condition>
-    <condition id="ARMCC GCC IAR">
-      <accept Tcompiler="ARMCC"/>
-      <accept Tcompiler="GCC"/>
-      <accept Tcompiler="IAR"/>
-    </condition>
 
     <!-- Arm architecture -->
     <condition id="ARMv6-M Device">
@@ -1140,21 +1131,11 @@ and 8-bit Java bytecodes in Jazelle state.
       <accept Dcore="Cortex-M55"/>
       <accept Dcore="Cortex-M85"/>
     </condition>
-    <condition id="ARMv8x-MML Device">
-      <description>Armv8-M/Armv8.1-M architecture based device</description>
-      <accept condition="ARMv8-MML Device"/>
-      <accept condition="ARMv81-MML Device"/>
-    </condition>
     <condition id="ARMv8-M Device">
       <description>Armv8-M architecture based device</description>
       <accept condition="ARMv8-MBL Device"/>
       <accept condition="ARMv8-MML Device"/>
       <accept condition="ARMv81-MML Device"/>
-    </condition>
-    <condition id="ARMv6_7-M Device">
-      <description>Armv6_7-M architecture based device</description>
-      <accept condition="ARMv6-M Device"/>
-      <accept condition="ARMv7-M Device"/>
     </condition>
     <condition id="ARMv6_7_8-M Device">
       <description>Armv6_7_8-M architecture based device</description>
@@ -1177,12 +1158,6 @@ and 8-bit Java bytecodes in Jazelle state.
       <description>TrustZone (Secure)</description>
       <require Dtz="TZ"/>
       <require Dsecure="Secure"/>
-    </condition>
-    <condition id="TZ Non-secure">
-      <description>TrustZone (Non-secure)</description>
-      <require Dtz="TZ"/>
-      <accept Dsecure="Non-secure"/>
-      <accept Dsecure="TZ-disabled"/>
     </condition>
 
     <!-- Startup -->
@@ -1312,294 +1287,6 @@ and 8-bit Java bytecodes in Jazelle state.
       <require Cclass="CMSIS" Cgroup="CORE"/>
     </condition>
 
-    <condition id="ARMCC ARMv6-M LE">
-        <description>Arm Compiler for Armv6-M architecture (little endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv6-M Device"/>
-        <require Dendian="Little-endian"/>
-    </condition>
-    <condition id="ARMCC ARMv6-M BE">
-        <description>Arm Compiler for Armv6-M architecture (big endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv6-M Device"/>
-        <require Dendian="Big-endian"/>
-    </condition>
-    <condition id="ARMCC ARMv7-M NOFP LE">
-        <description>Arm Compiler for Armv7-M architecture without FPU (little endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="ARMCC ARMv7-M NOFP BE">
-        <description>Arm Compiler for Armv7-M architecture without FPU (big endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Big-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="ARMCC ARMv7-M FP LE">
-        <description>Arm Compiler for Armv7-M architecture with FPU (little endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="ARMCC ARMv7-M FP BE">
-        <description>Arm Compiler for Armv7-M architecture with FPU (big endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Big-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="ARMCC ARMv8-MBL LE">
-        <description>Arm Compiler for Armv8-M base line architecture (little endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv8-MBL Device"/>
-        <require Dendian="Little-endian"/>
-    </condition>
-    <condition id="ARMCC ARMv8-MML NOFP LE">
-        <description>Arm Compiler for Armv8-M/Armv8.1-M main line architecture without FPU/MVE (little endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv8x-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-        <require Dmve="NO_MVE"/>
-    </condition>
-     <condition id="ARMCC ARMv8-MML FP LE">
-        <description>Arm Compiler for Armv8-M/Armv8.1-M main line architecture with FPU/MVE (little endian)</description>
-        <require condition="ARMCC"/>
-        <require condition="ARMv8x-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-        <accept Dmve="MVE"/>
-        <accept Dmve="FP_MVE"/>
-    </condition>
-
-    <condition id="GCC ARMv6-M LE">
-        <description>GNU Compiler for Armv6-M architecture (little endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv6-M Device"/>
-        <require Dendian="Little-endian"/>
-    </condition>
-    <condition id="GCC ARMv6-M BE">
-        <description>GNU Compiler for Armv6-M architecture (big endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv6-M Device"/>
-        <require Dendian="Big-endian"/>
-    </condition>
-    <condition id="GCC ARMv7-M NOFP LE">
-        <description>GNU Compiler for Armv7-M architecture without FPU (little endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="GCC ARMv7-M NOFP BE">
-        <description>GNU Compiler for Armv7-M architecture without FPU (big endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Big-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="GCC ARMv7-M FP LE">
-        <description>GNU Compiler for Armv7-M architecture with FPU (little endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="GCC ARMv7-M FP BE">
-        <description>GNU Compiler for Armv7-M architecture with FPU (big endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Big-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="GCC ARMv8-MBL LE">
-        <description>GNU Compiler for Armv8-M base line architecture (little endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv8-MBL Device"/>
-        <require Dendian="Little-endian"/>
-    </condition>
-    <condition id="GCC ARMv8-MML NOFP LE">
-        <description>GNU Compiler for Armv8-M/Armv8.1-M main line architecture without FPU/MVE (little endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv8x-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-        <require Dmve="NO_MVE"/>
-    </condition>
-     <condition id="GCC ARMv8-MML FP LE">
-        <description>GNU Compiler for Armv8-M/Armv8.1-M main line architecture with FPU/MVE (little endian)</description>
-        <require condition="GCC"/>
-        <require condition="ARMv8x-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-        <accept Dmve="MVE"/>
-        <accept Dmve="FP_MVE"/>
-    </condition>
-
-    <condition id="IARCC ARMv6-M LE">
-        <description>IAR Compiler for Armv6-M architecture (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv6-M Device"/>
-        <require Dendian="Little-endian"/>
-    </condition>
-    <condition id="IARCC ARMv6-M BE">
-        <description>IAR Compiler for Armv6-M architecture (big endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv6-M Device"/>
-        <require Dendian="Big-endian"/>
-    </condition>
-    <condition id="IARCC ARMv7-M NOFP LE">
-        <description>IAR Compiler for Armv7-M architecture without FPU (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="IARCC ARMv7-M NOFP BE">
-        <description>IAR Compiler for Armv7-M architecture without FPU (big endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Big-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="IARCC ARMv7-M FP LE">
-        <description>IAR Compiler for Armv7-M architecture with FPU (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="IARCC ARMv7-M FP BE">
-        <description>IAR Compiler for Armv7-M architecture with FPU (big endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv7-M Device"/>
-        <require Dendian="Big-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="IARCC ARMv8-MBL LE">
-        <description>IAR Compiler for Armv8-M base line architecture (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv8-MBL Device"/>
-        <require Dendian="Little-endian"/>
-    </condition>
-    <condition id="IARCC ARMv8-MML NOFP LE">
-        <description>IAR Compiler for Armv8-M main line architecture without FPU (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv8-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-    </condition>
-    <condition id="IARCC ARMv8-MML FP LE">
-        <description>IAR Compiler for Armv8-M main line architecture with FPU (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv8-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-    </condition>
-    <condition id="IARCC ARMv81-MML NOFP LE">
-        <description>IAR Compiler for Armv8.1-M main line architecture without FPU/MVE (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv81-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <require Dfpu="NO_FPU"/>
-        <require Dmve="NO_MVE"/>
-    </condition>
-     <condition id="IARCC ARMv81-MML FP LE">
-        <description>IAR Compiler for Armv8.1-M main line architecture with FPU/MVE (little endian)</description>
-        <require condition="IAR"/>
-        <require condition="ARMv81-MML Device"/>
-        <require Dendian="Little-endian"/>
-        <accept Dfpu="SP_FPU"/>
-        <accept Dfpu="DP_FPU"/>
-        <accept Dmve="MVE"/>
-        <accept Dmve="FP_MVE"/>
-    </condition>
-
-    <condition id="ARMASM ARMv6-M">
-        <description>Arm Assembler for Armv6-M architecture</description>
-        <require condition="ARMCC5"/>
-        <require condition="ARMv6-M Device"/>
-    </condition>
-    <condition id="GNUASM ARMv6-M">
-        <description>GNU Assembler for Armv6-M architecture</description>
-        <accept condition="ARMCC6"/>
-        <accept condition="GCC"/>
-        <require condition="ARMv6-M Device"/>
-    </condition>
-    <condition id="IARASM ARMv6-M">
-        <description>IAR Assembler for Armv6-M architecture</description>
-        <require condition="IAR"/>
-        <require condition="ARMv6-M Device"/>
-    </condition>
-
-    <condition id="ARMASM ARMv7-M">
-        <description>Arm Assembler for Armv7-M architecture</description>
-        <require condition="ARMCC5"/>
-        <require condition="ARMv7-M Device"/>
-    </condition>
-    <condition id="GNUASM ARMv7-M">
-        <description>GNU Assembler for Armv7-M architecture</description>
-        <accept condition="ARMCC6"/>
-        <accept condition="GCC"/>
-        <require condition="ARMv7-M Device"/>
-    </condition>
-    <condition id="IARASM ARMv7-M">
-        <description>IAR Assembler for Armv7-M architecture</description>
-        <require condition="IAR"/>
-        <require condition="ARMv7-M Device"/>
-    </condition>
-
-    <condition id="GNUASM ARMv8-MBL">
-        <description>GNU Assembler for Armv8-M base line architecture</description>
-        <require condition="ARMCC GCC"/>
-        <require condition="ARMv8-MBL Device"/>
-    </condition>
-    <condition id="GNUASM ARMv8-MML">
-        <description>GNU Assembler for Armv8-M/Armv8.1-M main line architecture</description>
-        <require condition="ARMCC GCC"/>
-        <require condition="ARMv8x-MML Device"/>
-    </condition>
-    <condition id="IARASM ARMv8-MBL">
-        <description>IAR Assembler for Armv8-M base line architecture</description>
-        <require condition="IAR"/>
-        <require condition="ARMv8-MBL Device"/>
-    </condition>
-    <condition id="IARASM ARMv8-MML">
-        <description>IAR Assembler for Armv8-M main line architecture</description>
-        <require condition="IAR"/>
-        <require condition="ARMv8x-MML Device"/>
-    </condition>
-
-    <condition id="ARMASM ARMv7-A">
-        <description>Arm Assembler for Armv7-A architecture</description>
-        <require condition="ARMCC5"/>
-        <require condition="ARMv7-A Device"/>
-    </condition>
-    <condition id="GNUASM ARMv7-A">
-        <description>GNU Assembler for Armv7-A architecture</description>
-        <accept condition="ARMCC6"/>
-        <accept condition="GCC"/>
-        <require condition="ARMv7-A Device"/>
-    </condition>
-    <condition id="IARASM ARMv7-A">
-        <description>IAR Assembler for Armv7-A architecture</description>
-        <require condition="IAR"/>
-        <require condition="ARMv7-A Device"/>
-    </condition>
-
     <!-- OS Tick -->
     <condition id="OS Tick PTIM">
       <description>Components required for OS Tick Private Timer</description>
@@ -1626,8 +1313,8 @@ and 8-bit Java bytecodes in Jazelle state.
         <file category="include" name="core_m/include/"/>
         <file category="header"  name="core_m/include/tz_context.h" condition="TrustZone"/>
         <!-- Code template -->
-        <file category="sourceC" attr="template" condition="TZ Secure" name="core_m/template/ARMv8-M/main_s.c"     version="1.1.1" select="Secure mode 'main' module for ARMv8-M"/>
-        <file category="sourceC" attr="template" condition="TZ Secure" name="core_m/template/ARMv8-M/tz_context.c" version="1.1.1" select="RTOS Context Management (TrustZone for ARMv8-M)" />
+        <file category="sourceC" attr="template" condition="TZ Secure" name="core_m/template/armv8-m/main_s.c"     version="1.1.1" select="Secure mode 'main' module for ARMv8-M"/>
+        <file category="sourceC" attr="template" condition="TZ Secure" name="core_m/template/armv8-m/tz_context.c" version="1.1.1" select="RTOS Context Management (TrustZone for ARMv8-M)" />
       </files>
     </component>
 
@@ -2028,7 +1715,7 @@ and 8-bit Java bytecodes in Jazelle state.
         <file category="linkerScript" name="device/arm/ARMv8MBL/src/arm/ARMv8MBL_ac6.sct"           version="1.1.0" attr="config" condition="Startup ARMCC6 Unsecure"/>
         <file category="sourceAsm"    name="device/arm/ARMv8MBL/src/gcc/startup_ARMv8MBL.S"         version="2.2.0" attr="config" condition="GCC"/>
         <file category="linkerScript" name="device/arm/ARMv8MBL/src/gcc/gcc_arm.ld"                 version="2.2.0" attr="config" condition="GCC"/>
-        <file category="sourceC"      name="device/arm/ARMv8MBL/src/system_ARMv8MBL.c"      version="1.0.1" attr="config" condition="ARMCC GCC"/>
+        <file category="sourceC"      name="device/arm/ARMv8MBL/src/system_ARMv8MBL.c"              version="1.0.1" attr="config"/>
         <!-- SAU configuration -->
         <file category="header"       name="device/arm/ARMv8MBL/include/template/partition_ARMv8MBL.h" version="1.0.0" attr="config"/>
       </files>
@@ -2061,7 +1748,7 @@ and 8-bit Java bytecodes in Jazelle state.
         <file category="linkerScript" name="device/arm/ARMv8MML/src/arm/ARMv8MML_ac6.sct"           version="1.1.0" attr="config" condition="Startup ARMCC6 Unsecure"/>
         <file category="sourceAsm"    name="device/arm/ARMv8MML/src/gcc/startup_ARMv8MML.S"         version="2.3.0" attr="config" condition="GCC"/>
         <file category="linkerScript" name="device/arm/ARMv8MML/src/gcc/gcc_arm.ld"                 version="2.2.0" attr="config" condition="GCC"/>
-        <file category="sourceC"      name="device/arm/ARMv8MML/src/system_ARMv8MML.c"              version="1.0.1" attr="config" condition="ARMCC GCC"/>
+        <file category="sourceC"      name="device/arm/ARMv8MML/src/system_ARMv8MML.c"              version="1.0.1" attr="config"/>
         <!-- SAU configuration -->
         <file category="header"       name="device/arm/ARMv8MML/include/template/partition_ARMv8MML.h" version="1.1.1" attr="config" condition="TZ Secure"/>
       </files>
@@ -2091,18 +1778,18 @@ and 8-bit Java bytecodes in Jazelle state.
         <!-- include folder / device header file -->
         <file category="include"      name="device/arm/ARMCA5/include/"/>
         <!-- startup / system / mmu files -->
-        <file category="sourceC"      name="device/arm/ARMCA5/src/AC5/startup_ARMCA5.c" version="1.0.0" attr="config" condition="ARMCC5"/>
-        <file category="linkerScript" name="device/arm/ARMCA5/src/AC5/ARMCA5.sct"       version="1.0.0" attr="config" condition="ARMCC5"/>
-        <file category="sourceC"      name="device/arm/ARMCA5/src/AC6/startup_ARMCA5.c" version="1.0.1" attr="config" condition="ARMCC6"/>
-        <file category="linkerScript" name="device/arm/ARMCA5/src/AC6/ARMCA5.sct"       version="1.0.0" attr="config" condition="ARMCC6"/>
+        <file category="sourceC"      name="device/arm/ARMCA5/src/ac5/startup_ARMCA5.c" version="1.0.0" attr="config" condition="ARMCC5"/>
+        <file category="linkerScript" name="device/arm/ARMCA5/src/ac5/ARMCA5.sct"       version="1.0.0" attr="config" condition="ARMCC5"/>
+        <file category="sourceC"      name="device/arm/ARMCA5/src/ac6/startup_ARMCA5.c" version="1.0.1" attr="config" condition="ARMCC6"/>
+        <file category="linkerScript" name="device/arm/ARMCA5/src/ac6/ARMCA5.sct"       version="1.0.0" attr="config" condition="ARMCC6"/>
         <file category="sourceC"      name="device/arm/ARMCA5/src/gcc/startup_ARMCA5.c" version="1.0.1" attr="config" condition="GCC"/>
         <file category="linkerScript" name="device/arm/ARMCA5/src/gcc/ARMCA5.ld"        version="1.0.0" attr="config" condition="GCC"/>
         <file category="sourceAsm"    name="device/arm/ARMCA5/src/iar/startup_ARMCA5.s" version="1.0.0" attr="config" condition="IAR"/>
         <file category="linkerScript" name="device/arm/ARMCA5/src/iar/ARMCA5.icf"       version="1.0.0" attr="config" condition="IAR"/>
         <file category="sourceC"      name="device/arm/ARMCA5/src/system_ARMCA5.c"      version="1.0.1" attr="config"/>
         <file category="sourceC"      name="device/arm/ARMCA5/src/mmu_ARMCA5.c"         version="1.2.0" attr="config"/>
-        <file category="header"       name="device/arm/ARMCA5/Config/system_ARMCA5.h"      version="1.0.0" attr="config"/>
-        <file category="header"       name="device/arm/ARMCA5/Config/mem_ARMCA5.h"         version="1.1.0" attr="config"/>
+        <file category="header"       name="device/arm/ARMCA5/config/system_ARMCA5.h"      version="1.0.0" attr="config"/>
+        <file category="header"       name="device/arm/ARMCA5/config/mem_ARMCA5.h"         version="1.1.0" attr="config"/>
 
       </files>
     </component>
@@ -2114,18 +1801,18 @@ and 8-bit Java bytecodes in Jazelle state.
         <!-- include folder / device header file -->
         <file category="include"      name="device/arm/ARMCA7/include/"/>
         <!-- startup / system / mmu files -->
-        <file category="sourceC"      name="device/arm/ARMCA7/src/AC5/startup_ARMCA7.c" version="1.0.0" attr="config" condition="ARMCC5"/>
-        <file category="linkerScript" name="device/arm/ARMCA7/src/AC5/ARMCA7.sct"       version="1.0.0" attr="config" condition="ARMCC5"/>
-        <file category="sourceC"      name="device/arm/ARMCA7/src/AC6/startup_ARMCA7.c" version="1.0.1" attr="config" condition="ARMCC6"/>
-        <file category="linkerScript" name="device/arm/ARMCA7/src/AC6/ARMCA7.sct"       version="1.0.0" attr="config" condition="ARMCC6"/>
+        <file category="sourceC"      name="device/arm/ARMCA7/src/ac5/startup_ARMCA7.c" version="1.0.0" attr="config" condition="ARMCC5"/>
+        <file category="linkerScript" name="device/arm/ARMCA7/src/ac5/ARMCA7.sct"       version="1.0.0" attr="config" condition="ARMCC5"/>
+        <file category="sourceC"      name="device/arm/ARMCA7/src/ac6/startup_ARMCA7.c" version="1.0.1" attr="config" condition="ARMCC6"/>
+        <file category="linkerScript" name="device/arm/ARMCA7/src/ac6/ARMCA7.sct"       version="1.0.0" attr="config" condition="ARMCC6"/>
         <file category="sourceC"      name="device/arm/ARMCA7/src/gcc/startup_ARMCA7.c" version="1.0.1" attr="config" condition="GCC"/>
         <file category="linkerScript" name="device/arm/ARMCA7/src/gcc/ARMCA7.ld"        version="1.0.0" attr="config" condition="GCC"/>
         <file category="sourceAsm"    name="device/arm/ARMCA7/src/iar/startup_ARMCA7.s" version="1.0.0" attr="config" condition="IAR"/>
         <file category="linkerScript" name="device/arm/ARMCA7/src/iar/ARMCA7.icf"       version="1.0.0" attr="config" condition="IAR"/>
         <file category="sourceC"      name="device/arm/ARMCA7/src/system_ARMCA7.c"      version="1.0.1" attr="config"/>
         <file category="sourceC"      name="device/arm/ARMCA7/src/mmu_ARMCA7.c"         version="1.2.0" attr="config"/>
-        <file category="header"       name="device/arm/ARMCA7/Config/system_ARMCA7.h"      version="1.0.0" attr="config"/>
-        <file category="header"       name="device/arm/ARMCA7/Config/mem_ARMCA7.h"         version="1.1.0" attr="config"/>
+        <file category="header"       name="device/arm/ARMCA7/config/system_ARMCA7.h"      version="1.0.0" attr="config"/>
+        <file category="header"       name="device/arm/ARMCA7/config/mem_ARMCA7.h"         version="1.1.0" attr="config"/>
       </files>
     </component>
 
@@ -2136,18 +1823,18 @@ and 8-bit Java bytecodes in Jazelle state.
         <!-- include folder / device header file -->
         <file category="include"  name="device/arm/ARMCA9/include/"/>
         <!-- startup / system / mmu files -->
-        <file category="sourceC"      name="device/arm/ARMCA9/src/AC5/startup_ARMCA9.c" version="1.0.0" attr="config" condition="ARMCC5"/>
-        <file category="linkerScript" name="device/arm/ARMCA9/src/AC5/ARMCA9.sct"       version="1.0.0" attr="config" condition="ARMCC5"/>
-        <file category="sourceC"      name="device/arm/ARMCA9/src/AC6/startup_ARMCA9.c" version="1.0.1" attr="config" condition="ARMCC6"/>
-        <file category="linkerScript" name="device/arm/ARMCA9/src/AC6/ARMCA9.sct"       version="1.0.0" attr="config" condition="ARMCC6"/>
+        <file category="sourceC"      name="device/arm/ARMCA9/src/ac5/startup_ARMCA9.c" version="1.0.0" attr="config" condition="ARMCC5"/>
+        <file category="linkerScript" name="device/arm/ARMCA9/src/ac5/ARMCA9.sct"       version="1.0.0" attr="config" condition="ARMCC5"/>
+        <file category="sourceC"      name="device/arm/ARMCA9/src/ac6/startup_ARMCA9.c" version="1.0.1" attr="config" condition="ARMCC6"/>
+        <file category="linkerScript" name="device/arm/ARMCA9/src/ac6/ARMCA9.sct"       version="1.0.0" attr="config" condition="ARMCC6"/>
         <file category="sourceC"      name="device/arm/ARMCA9/src/gcc/startup_ARMCA9.c" version="1.0.1" attr="config" condition="GCC"/>
         <file category="linkerScript" name="device/arm/ARMCA9/src/gcc/ARMCA9.ld"        version="1.0.0" attr="config" condition="GCC"/>
         <file category="sourceAsm"    name="device/arm/ARMCA9/src/iar/startup_ARMCA9.s" version="1.0.0" attr="config" condition="IAR"/>
         <file category="linkerScript" name="device/arm/ARMCA9/src/iar/ARMCA9.icf"       version="1.0.0" attr="config" condition="IAR"/>
         <file category="sourceC"      name="device/arm/ARMCA9/src/system_ARMCA9.c"      version="1.0.1" attr="config"/>
         <file category="sourceC"      name="device/arm/ARMCA9/src/mmu_ARMCA9.c"         version="1.2.0" attr="config"/>
-        <file category="header"       name="device/arm/ARMCA9/Config/system_ARMCA9.h"      version="1.0.0" attr="config"/>
-        <file category="header"       name="device/arm/ARMCA9/Config/mem_ARMCA9.h"         version="1.1.0" attr="config"/>
+        <file category="header"       name="device/arm/ARMCA9/config/system_ARMCA9.h"      version="1.0.0" attr="config"/>
+        <file category="header"       name="device/arm/ARMCA9/config/mem_ARMCA9.h"         version="1.1.0" attr="config"/>
       </files>
     </component>
 
