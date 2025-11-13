@@ -1,0 +1,12 @@
+name: Update library in gen-pack scripts
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 9 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-workflows:
+    uses: Open-CMSIS-Pack/gen-pack/.github/workflows/update-lib.yml@update-scripts-workflow
