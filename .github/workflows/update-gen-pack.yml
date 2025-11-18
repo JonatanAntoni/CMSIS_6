@@ -11,3 +11,5 @@ permissions:
 jobs:
   update-workflows:
     uses: Open-CMSIS-Pack/gen-pack/.github/workflows/update-lib.yml@update-scripts-workflow
+    secrets:
+      TOKEN_ACCESS: ${{ secrets.TOKEN_WORKFLOW_UPDATE }}
